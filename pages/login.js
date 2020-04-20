@@ -6,12 +6,16 @@ import firebase from '@react-native-firebase/app';
 //import auth from '@react-native-firebase/auth';
 import {ImageBackground, Button, StyleSheet, Text, View, Alert, TextInput, Image} from 'react-native';
 
-import {addUser} from '../firestoreSetup'
+import {addUser, showUser} from '../firestoreSetup'
 
 const me = {
-  21100311: {
-    name: 'Usman' 
-  }
+  name : 'Talha',
+  password : 'password',
+  email : '21100313@lums.edu.pk',
+  wallet : '0',
+  admin : false,
+  pastOrders : 'False',
+  currentOrder : {}
 }
 
 export default class Login extends React.Component {
@@ -24,6 +28,7 @@ export default class Login extends React.Component {
           <Text style={styles.subtitleText}> Password</Text>
           <TextInput style={styles.TextInput} placeholder='password' textAlign={'center'} ></TextInput>
           <Button title="Login" onPress={() => this.props.navigation.navigate('Sessions Menu')}/>
+          <Button title="Database" onPress={() => this.props.navigation.navigate('UserData')}/>
           <Text style={styles.subtitleText} onPress={() => addUser(me)}> Forgot your password?</Text>
         </ImageBackground>
     );
