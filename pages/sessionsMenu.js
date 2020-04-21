@@ -2,28 +2,57 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {ImageBackground, Button, StyleSheet, Text, View, Alert, Image, ScrollView} from 'react-native';
+import auth from '@react-native-firebase/auth';
+import {ImageBackground, Button, StyleSheet, Text, View, Alert, Image, ScrollView,TouchableOpacity} from 'react-native';
 import Sidebar from 'react-native-sidebar';
- 
+
+
+/*
+elevation:3,
+backgroundColor: '#fff',
+shadowOffset: {width:1,height:1},
+shadowColor: '#333',
+shadowOpacity: 0.3,
+shadowRadius: 2,
+marginHorizontal:4,
+marginVertical:6
+*/
 
 export default class SessionMenu extends React.Component {
   render(){
     return (
-      <ScrollView showsVerticalScrollIndicator= {true} styles={styles.scroll} >
+     
+     <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={styles.scroll} >
         <View style={styles.titleback}>
         <Text style={styles.titleText}>Sessions</Text>
+        <Text onPress={() => {
+          auth().signOut().catch(err => console.log(err))
+          this.props.navigation.navigate('Login')
+        }}>Sign Out</Text>
         </View>
         <View style={styles.container}>
-                
-           <Image style={styles.Img} source={require('./breakfast.jpeg')} />
-           <Text style={styles.sessioname}>Breakfast</Text>
-           
-           <Image style={styles.Img} source={require('./lunch.jpeg')} />
-           <Text style={styles.sessioname}>Lunch</Text>
-           
-           <Image style={styles.Img} source={require('./dinner.jpg')} />
-           <Text style={styles.sessioname}>Dinner</Text>
-       
+
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('breakfast')}>
+           <View style={styles.box}>
+             <Image style={styles.Img} source={require('./breakfast.jpeg')} />
+             <Text style={styles.sessioname}>Breakfast</Text>
+           </View>
+        </TouchableOpacity>
+        
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('breakfast')}>
+           <View style={styles.box}>
+             <Image style={styles.Img} source={require('./lunch.jpeg')} />
+             <Text style={styles.sessioname}>Lunch</Text>
+            </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('breakfast')}>
+           <View style={styles.box}>
+             <Image style={styles.Img} source={require('./dinner.jpg')} />
+             <Text style={styles.sessioname}>Dinner</Text>
+          </View>
+        </TouchableOpacity>
+        
         </View>
      </ScrollView>
    );
@@ -35,6 +64,15 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start'
+  },
+  box: {
+    alignItems: 'center',
+    borderWidth: 5,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    borderBottomRightRadius: 20,
+    borderBottomLeftRadius: 20,
+    height: 267
   },
   titleback: {
     backgroundColor:'navajowhite',
@@ -68,12 +106,8 @@ const styles = StyleSheet.create({
   },
   scroll: {
     flexDirection: 'column',
-    borderColor: 'red',
     borderStyle: 'solid',
-    borderWidth: 20,
-    borderRadius: 10,
     position: 'relative'
- 
   }   
 
  });

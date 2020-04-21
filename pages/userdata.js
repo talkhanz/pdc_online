@@ -2,53 +2,43 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import firebase from '@react-native-firebase/app';
-import firestore from '@react-native-firebase/firestore';
-//import auth from '@react-native-firebase/auth';
-import {ImageBackground, Button, StyleSheet, Text, View, Alert, TextInput, Image} from 'react-native';
+import {ImageBackground, Button, StyleSheet, Text, View, ScrollView, Alert, TextInput, Image} from 'react-native';
+import { showUser } from '../firestoreSetup';
 
 export default class Userdata extends React.Component{
     state = {
-        userIDs: null,
+        userIDs: [],
         userFields: [],
     }
 
-    async componentDidMount(){
-        var IDs = []
-        var Fields = []
-
-        await firebase.firestore().collection('Users').get()
-        .then(snapshot => {
-            snapshot.forEach( doc => {
-                Fields.push(doc.data())
-                IDs.push(doc.id)
-                console.log('88888')
-            })
-            this.setState({userIDs: IDs})
-            this.setState({userFields: Fields})
+    componentDidMount(){
+        showUser()
+        .then((returned) => {
+            this.setState({userIDs: returned.key1 , userFields: returned.key2})
         })
-        .catch(err => console.log(err))
+        .catch(error => console.log(error))
     }
 
     render(){
         var index = -1
         return(
+            <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={styles.scroll} >
             <View style={styles.container}>{
                 this.state.userIDs &&
                 this.state.userIDs.map( id => {
                     index++
                     var fieldData = JSON.stringify(this.state.userFields[index], (k, v) => { return v === undefined ? null : v; })
                     var newFieldData = fieldData.replace(/,/g, "\n")
-                    console.log(newFieldData)
                     return(
                     <View>
                     <Text style={styles.titleText}>{id}</Text>
                     <Text style={styles.subtitleText}>{newFieldData} {'\n'}</Text>
                     </View>
                     )
-                })
-            
+                })   
             }</View>
+                 </ScrollView>
+
         )        
     }
 }
