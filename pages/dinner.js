@@ -5,16 +5,16 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {Text, View, StyleSheet,TouchableOpacity, FlatList, Alert} from 'react-native';
 import { WebView } from 'react-native-webview';
 
-import {fetchBreakfastMenu} from './fetcher';
+import {fetchDinnerMenu} from './fetcher';
 
 export default class breakfast extends React.Component {
     state = {
-      menuAvailable: '',
+      menuAvailable: '',  
       itemList : []
     }
 
     componentDidMount(){
-      fetchBreakfastMenu()
+      fetchDinnerMenu()
       .then( received => {
         if(received[0] == 'Menu not available'){
             this.setState({menuAvailable: received[0]})}

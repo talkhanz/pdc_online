@@ -8,9 +8,11 @@ import login from './pages/login';
 import userdata from './pages/userdata';
 import sessionsMenu from './pages/sessionsMenu';
 import breakfast from './pages/breakfast';
+import lunch from './pages/lunch';
+import dinner from './pages/dinner';
 import signup from './pages/signup';
 //import { divide } from 'react-native-reanimated';
-
+import {navigate} from './routes/SessionStack';
 const stack = createStackNavigator();
  
 export default class App extends React.Component {
@@ -25,6 +27,8 @@ export default class App extends React.Component {
             <stack.Screen name="UserData" component={userdata} options={{ headerShown: false}}/>
             <stack.Screen name="Sessions Menu" component={sessionsMenu} options={{ headerShown: false}}/>
             <stack.Screen name="breakfast" component={breakfast} options={{ headerShown: false}}/>
+            <stack.Screen name="lunch" component={lunch} options={{ headerShown: false}}/>
+            <stack.Screen name="dinner" component={dinner} options={{ headerShown: false}}/>
             <stack.Screen name="signup" component={signup} options={{ headerShown: false}}/>
         </stack.Navigator>
      </NavigationContainer>

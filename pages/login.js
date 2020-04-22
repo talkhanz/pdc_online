@@ -23,6 +23,7 @@ export default class Login extends React.Component {
   signin(){
     auth().signInWithEmailAndPassword(this.state.email, this.state.password)
     .catch(err => {this.setState({errorMessage: err.message})
+    console.log(this.state.user)
   })
   }
 
@@ -47,7 +48,7 @@ export default class Login extends React.Component {
             <TouchableOpacity style={styles.button}>
                 <Text style={{color: 'white', fontSize: 17}} title="Database" onPress={() => this.props.navigation.navigate('UserData')}>Database</Text>
             </TouchableOpacity>
-            <Text style={styles.subtitleText} onPress={() => this.signup('21100311@lums.edu.pk', 'usmanpass')}> Forgot your password?</Text>
+            <Text style={styles.subtitleText} onPress={() => Alert.alert('Your Loss')}> Forgot your password?</Text>
             <Text style={styles.subtitleText} onPress={() => this.signup('21100311@lums.edu.pk', 'usmanpass')}> New to PDC Online?<Text style={{color: '#E9446A'}} onPress={() => this.props.navigation.navigate('signup')}> Sign up</Text></Text>
           </ImageBackground>
       )

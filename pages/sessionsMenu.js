@@ -1,11 +1,11 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
+import {createDrawerNavigator} from 'react-navigation-drawer'
+import {createAppContainer} from 'react-navigation'
 import {createStackNavigator} from '@react-navigation/stack';
 import auth from '@react-native-firebase/auth';
-import {ImageBackground, Button, StyleSheet, Text, View, Alert, Image, ScrollView,TouchableOpacity} from 'react-native';
-import Sidebar from 'react-native-sidebar';
-
+import {SafeAreaView, ImageBackground, Button, StyleSheet, Text, View, Alert, Image, ScrollView,TouchableOpacity} from 'react-native';
 
 /*
 elevation:3,
@@ -18,10 +18,11 @@ marginHorizontal:4,
 marginVertical:6
 */
 
+
 export default class SessionMenu extends React.Component {
   render(){
     return (
-     
+     <SafeAreaView>
      <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={styles.scroll} >
         <View style={styles.titleback}>
         <Text style={styles.titleText}>Sessions</Text>
@@ -39,14 +40,14 @@ export default class SessionMenu extends React.Component {
            </View>
         </TouchableOpacity>
         
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('breakfast')}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('lunch')}>
            <View style={styles.box}>
              <Image style={styles.Img} source={require('./lunch.jpeg')} />
              <Text style={styles.sessioname}>Lunch</Text>
             </View>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('breakfast')}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('dinner')}>
            <View style={styles.box}>
              <Image style={styles.Img} source={require('./dinner.jpg')} />
              <Text style={styles.sessioname}>Dinner</Text>
@@ -55,6 +56,7 @@ export default class SessionMenu extends React.Component {
         
         </View>
      </ScrollView>
+     </SafeAreaView>
    );
   }
 }
@@ -81,12 +83,11 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     borderBottomRightRadius: 20,
     borderBottomLeftRadius: 20,
-    height: '7%',
-    width: '95%'
+    // height: '7%',
+    // width: '95%'
   },
   titleText: {
     fontSize: 30,
-    textAlign:'center',
     fontWeight: "bold",
     paddingTop: '2%',
     color: 'black'
