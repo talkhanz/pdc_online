@@ -5,7 +5,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import {ImageBackground, Button, StyleSheet,TouchableOpacity, Text, View, Alert, TextInput, Image} from 'react-native';
+import {ImageBackground, Button, StyleSheet,ScrollView, TouchableOpacity, Text, View, Alert, TextInput, Image} from 'react-native';
 
 export default class Login extends React.Component{
     state = {
@@ -18,8 +18,10 @@ export default class Login extends React.Component{
     signup(){
         auth().createUserWithEmailAndPassword(this.state.email,this.state.password)
         .then((resp) => {
+            auth().currentUser.sendEmailVerification().catch(err => console.log(err))
+            Alert.alert('Please verify your email. It may be in your junk folder')
             this.setState({uid: resp.user.uid})
-            return firestore().collection('Users').doc(resp.user.uid).set({
+            firestore().collection('Users').doc(resp.user.uid).set({
                 name : this.state.name,
                 password : this.state.password,
                 email : this.state.email,
@@ -27,7 +29,7 @@ export default class Login extends React.Component{
                 admin : false,
                 pastOrders : 'False',
                 currentOrder : {}
-            }).then(() => console.log('User added to Firestore!'))
+            })
         })
         .catch(error => {
           if (error.code === 'auth/email-already-in-use') {
@@ -38,24 +40,26 @@ export default class Login extends React.Component{
           }
           this.setState({errorMessage: error.message})
         })
-        
+        auth().signOut().catch(err => console.log(err))
     }    
 
     render(){
         return (
+            <ScrollView  contentContainerStyle={{flexGrow: 1}} persistentScrollbar= {true} styles={styles.scroll} >
             <ImageBackground source={require('./pdc_image_blur.png')} style={styles.container}>
               <Text style={styles.titleText}> PDC ONLINE</Text>
               {this.state.errorMessage && <Text style={styles.subtitleText}>{this.state.errorMessage}</Text>}
               <Text style={styles.subtitleText}> Name</Text>
               <TextInput style={styles.TextInput} onChangeText={name => this.setState({name: name})} value={this.state.name} placeholder='Enter your full name' textAlign={'center'} ></TextInput>
-              <Text style={styles.subtitleText}> Username</Text>
+              <Text style={styles.subtitleText}> Email</Text>
               <TextInput style={styles.TextInput} onChangeText={email => this.setState({email: email})} value={this.state.email} placeholder='rollnumber@lums.edu.pk' textAlign={'center'}  ></TextInput>
               <Text style={styles.subtitleText}> Password</Text>
               <TextInput style={styles.TextInput} onChangeText={pass => this.setState({password: pass})} value={this.state.password} placeholder='password' secureTextEntry textAlign={'center'} ></TextInput>
-              <TouchableOpacity style={styles.button}>
-                <Text style={{color: 'white', fontSize: 17}} onPress={() => this.signup()}>Sign up</Text>
+              <TouchableOpacity onPress={() => this.signup()} style={styles.button}>
+                <Text style={{color: 'white', fontSize: 17}}>Sign up</Text>
             </TouchableOpacity>
             </ImageBackground>
+            </ScrollView>
        )
     }
 }
@@ -75,11 +79,11 @@ titleText: {
     textShadowRadius: 20
 },
 subtitleText: {
-    marginVertical: 10,
-    fontSize: 20, 
+    marginVertical: 7,
+    fontSize: 22, 
     color: 'white',
     textShadowColor: 'black',
-    textShadowOffset:  {width: -5, height: 5} ,
+    textShadowOffset:  {width: -3, height: 3} ,
     textShadowRadius: 10
 },
 usernameText:{},
@@ -95,7 +99,7 @@ TextInput:{
 button: {
     backgroundColor: '#E9446A',
     marginHorizontal: 10,
-    marginVertical: 5,
+    marginVertical: 10,
     borderRadius: 4,
     borderColor: '#CA2161',
     borderWidth: 1,

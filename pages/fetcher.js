@@ -14,7 +14,10 @@ export async function fetchBreakfastMenu(){
       var key = 1
       try{
           const tdList = $('#content_wrap').find('table:nth-child(10)').find('td:nth-child(2)')
-        for (var i=1 ; i<Object.keys(tdList).length; i++){
+          const no0fItems = Object.keys(tdList).filter( k => {
+            return (parseInt(k) == k)
+          })
+        for (var i=1 ; i<no0fItems.length; i++){
             const foodItemAndPrices = {}
             const item = $('#content_wrap').find('table:nth-child(10)').find('td:nth-child(2)')[i].children[0].data
             const priceQuarter = $('#content_wrap').find('table:nth-child(10)').find('td:nth-child(3)')[i].children[0].data
@@ -33,6 +36,7 @@ export async function fetchBreakfastMenu(){
         }
       }
       catch(err){
+        console.log(err)
         dataToReturn = ['Menu not available']
       }
     })
@@ -50,8 +54,11 @@ export async function fetchLunchMenu(){
       const $ = cheerio.load(htmlText);
       var key = 1
       try{
-          const tdList = $('#content_wrap').find('table:nth-child(16)').find('td:nth-child(2)')
-        for (var i=1 ; i<Object.keys(tdList).length; i++){
+        const tdList = $('#content_wrap').find('table:nth-child(10)').find('td:nth-child(2)')
+        const no0fItems = Object.keys(tdList).filter( k => {
+          return (parseInt(k) == k)
+        })
+      for (var i=1 ; i<no0fItems.length; i++){
             const foodItemAndPrices = {}
             const item = $('#content_wrap').find('table:nth-child(16)').find('td:nth-child(2)')[i].children[0].data
             const priceQuarter = $('#content_wrap').find('table:nth-child(16)').find('td:nth-child(3)')[i].children[0].data
@@ -86,8 +93,11 @@ export async function fetchDinnerMenu(){
       const $ = cheerio.load(htmlText);
       var key = 1
       try{
-          const tdList = $('#content_wrap').find('table:nth-child(21)').find('td:nth-child(2)')
-        for (var i=1 ; i<Object.keys(tdList).length; i++){
+        const tdList = $('#content_wrap').find('table:nth-child(10)').find('td:nth-child(2)')
+        const no0fItems = Object.keys(tdList).filter( k => {
+          return (parseInt(k) == k)
+        })
+      for (var i=1 ; i<no0fItems.length; i++){
             const foodItemAndPrices = {}
             const item = $('#content_wrap').find('table:nth-child(21)').find('td:nth-child(2)')[i].children[0].data
             const priceQuarter = $('#content_wrap').find('table:nth-child(21)').find('td:nth-child(3)')[i].children[0].data
