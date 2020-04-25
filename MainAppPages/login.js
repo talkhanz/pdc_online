@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useNavigationState} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import firebase from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
@@ -35,7 +35,8 @@ export default class Login extends React.Component {
   }
 
   render(){
-  if(!this.state.user || !this.state.verified){
+    console.log(this.props.navi)
+    if(!this.state.user || !this.state.verified){
       return (
           <ScrollView  contentContainerStyle={{flexGrow: 1}} persistentScrollbar= {true} styles={styles.scroll} >
             <ImageBackground source={require('./pdc_image_blur.png')} style={styles.container}>

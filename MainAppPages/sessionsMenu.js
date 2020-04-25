@@ -5,6 +5,7 @@ import {createDrawerNavigator} from 'react-navigation-drawer'
 import {createAppContainer} from 'react-navigation'
 import {createStackNavigator} from '@react-navigation/stack';
 import auth from '@react-native-firebase/auth';
+import Icon from 'react-native-vector-icons/Ionicons'
 import {SafeAreaView, ImageBackground, Button, StyleSheet, Text, View, Alert, Image, ScrollView,TouchableOpacity} from 'react-native';
 
 /*
@@ -24,12 +25,10 @@ export default class SessionMenu extends React.Component {
     return (
      <SafeAreaView>
      <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={styles.scroll} >
-        <View style={styles.titleback}>
-        <Text style={styles.titleText}>Sessions</Text>
-        <Text onPress={() => {
-          auth().signOut().catch(err => console.log(err))
-          this.props.navigation.navigate('Login')
-        }}>Sign Out</Text>
+        <View >
+        <Icon style={{paddingLeft: 10}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} />
+        <Text style={styles.titleText}>   
+        Sessions</Text>
         </View>
         <View style={styles.container}>
 
@@ -89,7 +88,7 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 30,
     fontWeight: "bold",
-    paddingTop: '2%',
+    paddingLeft: 120,
     color: 'black'
   },
   Img: {
