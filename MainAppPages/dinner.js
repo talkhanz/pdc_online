@@ -1,11 +1,13 @@
 import 'react-native-gesture-handler';
 import React from 'react';
+
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Text, View, StyleSheet,TouchableOpacity, FlatList, Alert} from 'react-native';
-import { WebView } from 'react-native-webview';
+import {Text,ScrollView, View, StyleSheet,TouchableOpacity, FlatList, Alert,Image, SafeAreaView} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons'
 
 import {fetchDinnerMenu} from './fetcher';
+
 
 export default class breakfast extends React.Component {
     state = {
@@ -28,15 +30,27 @@ export default class breakfast extends React.Component {
     render(){
       if(this.state.menuAvailable == 'Menu not available'){
           return(
+            <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={styles.scroll} >
+            <View style={styles.row}>
+              <Icon style={{marginHorizontal: 122}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} />
+                <Text style={styles.titleText}>Menu</Text>
+              <Icon style={{marginHorizontal:122}} onPress={() => this.props.navigation.navigate('cart')} name='md-cart' size={40} />
+            </View>
             <View style={styles.titleback}>
-            <Text style={styles.titleText}>Menu</Text>
             <Text style={{marginVertical: 10,fontSize: 20,paddingVertical: 250}}>Menu not available</Text>
             </View>
+          </ScrollView>
           )
       }
       return (
-       <View style={styles.titleback}>
-            <Text style={styles.titleText}>Menu</Text>
+        <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={styles.scroll} >
+          <View style={styles.row}>
+              <Icon style={{marginHorizontal: 122}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} />
+                <Text style={styles.titleText}>Menu</Text>
+                <Icon style={{marginHorizontal:122}} onPress={() => this.props.navigation.navigate('cart')} name='md-cart' size={40} />
+          </View>
+          <View style={styles.titleback}>
+
             <Text style={styles.subtitleText}>
                 Item{'  '}Quarter{'  '}Half{'  '}Standard
             </Text>
@@ -52,6 +66,7 @@ export default class breakfast extends React.Component {
              )}
             />
        </View>
+       </ScrollView>
      );
     }
   }
@@ -67,12 +82,28 @@ export default class breakfast extends React.Component {
         marginVertical: 10,
         fontSize: 20, 
       },
+      cart:{
+        alignItems: 'center',
+        borderWidth: 5,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        borderBottomRightRadius: 20,
+        borderBottomLeftRadius: 20,
+        height: 45,
+        width : 45
+    
+      },
       titleback: {
         alignItems: 'center',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         borderBottomRightRadius: 20,
         borderBottomLeftRadius: 20,
+      },
+      row: {
+        flex: 1,
+        justifyContent: 'center',
+        flexDirection: 'row'
       }
    });
   

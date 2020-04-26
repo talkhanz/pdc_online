@@ -1,7 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import auth from '@react-native-firebase/auth';
-import Icon from 'react-native-vector-icons/Ionicons'
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import { StackActions } from '@react-navigation/native';
@@ -14,6 +13,7 @@ import sessionsMenu from './MainAppPages/sessionsMenu';
 import breakfast from './MainAppPages/breakfast';
 import lunch from './MainAppPages/lunch';
 import dinner from './MainAppPages/dinner';
+import cart from './MainAppPages/cart';
 import signup from './MainAppPages/signup';
 import wallet from './DrawerPages/wallet';
 
@@ -43,13 +43,10 @@ function getGestureEnable(route) {
 
   switch (routeName) {
     case 'Login':
-      console.log('login switch')
       return false;
     case 'signup':
-      console.log('signup switch')
       return false;
     default:
-      console.log('default switch')
       return true
   }
 }
@@ -58,12 +55,13 @@ class AppStack extends React.Component {
     return(
       <stack.Navigator initialRouteName="Login">
         <stack.Screen name="Login" component={login} navi={this.props.navigation} options={{ gestureEnabled: false, headerShown: false}}/>
+        <stack.Screen name="signup" component={signup} options={{ headerShown: false}}/>
         <stack.Screen name="UserData" component={userdata} options={{ headerShown: false}}/>
         <stack.Screen name="Sessions Menu" component={sessionsMenu} options={{ headerShown: false}}/>
         <stack.Screen name="breakfast" component={breakfast} options={{ headerShown: false}}/>
         <stack.Screen name="lunch" component={lunch} options={{ headerShown: false}}/>
         <stack.Screen name="dinner" component={dinner} options={{ headerShown: false}}/>
-        <stack.Screen name="signup" component={signup} options={{ headerShown: false}}/>
+        <stack.Screen name="cart" component={cart} options={{ headerShown: false}}/>
       </stack.Navigator>
     )
   }

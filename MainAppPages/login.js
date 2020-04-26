@@ -35,7 +35,6 @@ export default class Login extends React.Component {
   }
 
   render(){
-    console.log(this.props.navi)
     if(!this.state.user || !this.state.verified){
       return (
           <ScrollView  contentContainerStyle={{flexGrow: 1}} persistentScrollbar= {true} styles={styles.scroll} >

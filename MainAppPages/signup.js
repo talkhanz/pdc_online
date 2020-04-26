@@ -20,12 +20,13 @@ export default class Login extends React.Component{
         .then((resp) => {
             auth().currentUser.sendEmailVerification().catch(err => console.log(err))
             Alert.alert('Please verify your email. It may be in your junk folder')
+            resp.user.updateProfile({displayName: this.state.name})
             this.setState({uid: resp.user.uid})
             firestore().collection('Users').doc(resp.user.uid).set({
                 name : this.state.name,
                 password : this.state.password,
                 email : this.state.email,
-                wallet : '0',
+                wallet : 0,
                 admin : false,
                 pastOrders : 'False',
                 currentOrder : {}

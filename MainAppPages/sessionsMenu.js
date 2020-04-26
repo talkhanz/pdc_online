@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
+
 import {NavigationContainer} from '@react-navigation/native';
 import {createDrawerNavigator} from 'react-navigation-drawer'
 import {createAppContainer} from 'react-navigation'
@@ -19,43 +20,41 @@ marginHorizontal:4,
 marginVertical:6
 */
 
-
 export default class SessionMenu extends React.Component {
+  
   render(){
-    return (
-     <SafeAreaView>
+    return (    
      <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={styles.scroll} >
-        <View >
-        <Icon style={{paddingLeft: 10}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} />
-        <Text style={styles.titleText}>   
-        Sessions</Text>
-        </View>
-        <View style={styles.container}>
-
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('breakfast')}>
-           <View style={styles.box}>
-             <Image style={styles.Img} source={require('./breakfast.jpeg')} />
-             <Text style={styles.sessioname}>Breakfast</Text>
-           </View>
-        </TouchableOpacity>
-        
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('lunch')}>
-           <View style={styles.box}>
-             <Image style={styles.Img} source={require('./lunch.jpeg')} />
-             <Text style={styles.sessioname}>Lunch</Text>
+        <View style={styles.row}>
+            <Icon style={{marginHorizontal: 100}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} />
+            <Text style={styles.titleText}>Sessions</Text>
+              <Icon style={{marginHorizontal:100}} onPress={() => this.props.navigation.navigate('cart')} name='md-cart' size={40} />
             </View>
-        </TouchableOpacity>
+        <View style={styles.titleback}>
+         
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('breakfast')}>
+            <View style={styles.box}>
+              <Image style={styles.Img} source={require('./breakfast.jpeg')} />
+              <Text style={styles.sessioname}>Breakfast</Text>
+              </View>
+          </TouchableOpacity>
+          
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('lunch')}>
+            <View style={styles.box}>
+              <Image style={styles.Img} source={require('./lunch.jpeg')} />
+              <Text style={styles.sessioname}>Lunch</Text>
+              </View>
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('dinner')}>
-           <View style={styles.box}>
-             <Image style={styles.Img} source={require('./dinner.jpg')} />
-             <Text style={styles.sessioname}>Dinner</Text>
-          </View>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('dinner')}>
+            <View style={styles.box}>
+              <Image style={styles.Img} source={require('./dinner.jpg')} />
+              <Text style={styles.sessioname}>Dinner</Text>
+            </View>
+          </TouchableOpacity>
         
         </View>
      </ScrollView>
-     </SafeAreaView>
    );
   }
 }
@@ -73,8 +72,21 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     borderBottomRightRadius: 20,
     borderBottomLeftRadius: 20,
-    height: 267
+    height: 267,
   },
+  cart:{
+    alignItems: 'center',
+    
+    paddingLeft: 100 ,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderBottomRightRadius: 20,
+    borderBottomLeftRadius: 20,
+    height: 45,
+    width : 45
+
+  },
+ 
   titleback: {
     backgroundColor:'navajowhite',
     alignSelf: 'center',
@@ -82,13 +94,11 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     borderBottomRightRadius: 20,
     borderBottomLeftRadius: 20,
-    // height: '7%',
-    // width: '95%'
   },
   titleText: {
     fontSize: 30,
     fontWeight: "bold",
-    paddingLeft: 120,
+    paddingTop: '2%',
     color: 'black'
   },
   Img: {
@@ -108,6 +118,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     borderStyle: 'solid',
     position: 'relative'
+  },
+  row: {
+    flex: 1,
+    justifyContent: 'center',
+    flexDirection: 'row'
   }   
-
  });
