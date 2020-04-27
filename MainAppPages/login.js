@@ -8,19 +8,19 @@ import firestore from '@react-native-firebase/firestore';
 import {ImageBackground, ActivityIndicator, Button, ScrollView ,StyleSheet,TouchableOpacity, Text, View, Alert, TextInput, Image} from 'react-native';
 
 export default class Login extends React.Component {
-  state = {
-    user: null,
-    verified: false,
-    email: '',
-    password: '',
-    errorMessage: null,
-    admin: false
+  state = {           // State of login component. State is data that can be used by component and changes over time
+    user: null,       // The user that signs in. Will contain user details. Null by default
+    verified: false,       // Boolean for whether user has verified email
+    email: '',             // user email
+    password: '',          // user password
+    errorMessage: null,    // Will contain all error messages to display on screen
+    admin: false           // Boolean for whether user is admin or not
   }
 
-  componentDidMount(){
+  componentDidMount(){      // Built in function that runs when component renders for the first time
     auth().onAuthStateChanged( user => {
-      this.setState({user: user})
-      if(user != null){
+      this.setState({user: user})                     //When a user logs in, the variable user in state is set to the user's unique details
+      if(user != null){                            
         this.setState({verified: user.emailVerified})
       }
     })

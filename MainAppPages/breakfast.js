@@ -9,40 +9,41 @@ import {fetchBreakfastMenu} from './fetcher';
 
 
 export default class breakfast extends React.Component {
-    state = {
-      menuAvailable: '',
-      itemList : [],
-      itemListCopy: [],
-      cartList:[],
-      count : 0, 
+    state = {             // State of the breakfast menu component
+      menuAvailable: '',  // This is updated to see whether the menu is available or not
+      itemList : [],      // This stores all the items that are available during the breakfast session
+      cartList:[],        // All items added to the cart by the user are stored here
+      count : 0,          // This counts the number of items added to our cart
     }
 
-    componentDidMount(){
-      fetchBreakfastMenu()
-      .then( received => {
-        if(received[0] == 'Menu not available'){
-            this.setState({menuAvailable: received[0]})}
-          else{
-            this.setState({itemList: received})
-            
-            this.setState({itemListCopy: received})
+    componentDidMount(){                            
+      fetchBreakfastMenu()                        // A function that fetches the breakfast menu from pdc's website every time a user taps on the breakfast menu box
+      .then( received => {                        // The function is called that returns a promise
+        if(received[0] == 'Menu not available'){  // If the menu is not available, then we return with a string only
+            this.setState({menuAvailable: received[0]})}  // Here the variable in state is set to Menu not available
+          else{                                   
+            this.setState({itemList: received})   // This updated the item list when the menu is avilable         
           }
       })
-      .catch(err => console.log(err))
+      .catch(err => console.log(err))             // When there's an error instead, it is displayed
     }
 
     render(){
      
-      if(this.state.menuAvailable == 'Menu not available'){
-          return(
-            <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={styles.scroll} >
+      if(this.state.menuAvailable == 'Menu not available'){    // This checks, using the state variable menuAvailable, to see if menu is unavailable
+          return(                                              // Only following piece of code is returned when the condition is true
+            <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={styles.scroll} > 
             <View style={styles.row}>
-              <Icon style={{marginHorizontal: 122}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} />
+              <Icon style={{marginHorizontal: 122}} onPress={() =>           // A function that is called to open our drawer when the uuser taps on the icon in the tope left corner 
+                this.props.navigation.openDrawer()} name='md-menu' size={40} /* Here the Drawer is being called */ />
                 <Text style={styles.titleText}>Menu</Text>
-                <Icon onPress={() => this.props.navigation.navigate('cart')} name='md-cart' size={40} />
+                <Icon onPress={() =>                                         //This function runs when the shopping cart icon in the top right corener is pressed
+                  this.props.navigation.navigate('cart')} name='md-cart' size={40} /*This leads us to our shopping cart screen that has all the items that we added to it. In our shopping cart screen we will also place our order */ />
             </View>
             <View style={styles.titleback}>
+            
             <Text style={{marginVertical: 10,fontSize: 20,paddingVertical: 250}}>Menu not available</Text>
+            
             </View>
           </ScrollView>
           )

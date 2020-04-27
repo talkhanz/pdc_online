@@ -9,30 +9,19 @@ import auth from '@react-native-firebase/auth';
 import Icon from 'react-native-vector-icons/Ionicons'
 import {SafeAreaView, ImageBackground, Button, StyleSheet, Text, View, Alert, Image, ScrollView,TouchableOpacity} from 'react-native';
 
-/*
-elevation:3,
-backgroundColor: '#fff',
-shadowOffset: {width:1,height:1},
-shadowColor: '#333',
-shadowOpacity: 0.3,
-shadowRadius: 2,
-marginHorizontal:4,
-marginVertical:6
-*/
-
 export default class adminhome extends React.Component {
   
   render(){
     return (    
         
-     <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={styles.scroll} >
+     <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={styles.scroll} /* allows us to scroll */ > 
         <View style={styles.row}>
-            <Icon style={{marginRight: 90}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} />
+            <Icon style={{marginRight: 90}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} /* function in onPress prop opens sidetab/drawer*/ /> 
             <Text style={styles.titleText}>Admin Home</Text>
             </View>
         <View style={styles.titleback}>
          
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('adminVerifyOrder')}>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('adminVerifyOrder')} /* navigates to verifyOrder page onPress*/>  
             <View style={styles.box}>
               <Image style={styles.Img} source={require('./qrscan.jpg')} />
               <Text style={styles.sessioname}>Verify Order</Text>

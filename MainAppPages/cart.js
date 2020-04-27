@@ -3,6 +3,8 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Text, View, StyleSheet,TouchableOpacity, FlatList, Alert} from 'react-native';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 import {showWallet, updateWallet} from '../DrawerPages/wallet'
 
@@ -10,29 +12,43 @@ export default class cart extends React.Component {
     state = {
       itemList: [],
       errorMessage: '',
-      wallet: 0 
+      wallet: 0 ,
+      order: {
+        uid: 0,
+        orderList: [] 
+      }
     }
 
     calculateTotal(list){
       var total = 0 ;
       list.forEach(item=>{
-        total = total + parseInt(item.price)      
+        total = total + parseInt(item.price)  
+           
         
       })
+
+      
       return total
     }
 
     async checkWallet(total){
       const wallet = await showWallet()
-      console.log(wallet)
       if(wallet < total){
-        console.log(wallet, ' < ',total)
         this.setState({errorMessage: 'Insufficient Funds in Wallet'})
       }
       else{
-        this.props.navigation.navigate('qrCode')
+        console.log('uid: ')
+
+        const uid = await auth().currentUser.uid
+        this.setState({order:{uid: uid,orderList:this.props.route.params.cartItems}})
+        firestore().collection('Orders').add(this.state.order)
+        firestore().collection('Users').doc(uid).update({
+          currentOrder: this.state.order
+      })
+        this.props.navigation.navigate('qrCode',this.state.order)
       }
     }
+  
 
     render(){
      // console.log('Cart received ',)
@@ -49,6 +65,7 @@ export default class cart extends React.Component {
                        </TouchableOpacity>
                       )}
                      />
+                     <Text style={{marginVertical: 10,fontSize: 30}}>Total: { this.calculateTotal(this.props.route.params.cartItems)} </Text>
                      <View style={{marginTop: 200}}>
                         <Text style={styles.subtitleText}>{this.state.errorMessage}</Text>
                         <TouchableOpacity style={styles.button} onPress={() => {
@@ -56,6 +73,7 @@ export default class cart extends React.Component {
                           const CheckoutStatus = this.checkWallet(total)
 
                         }}>
+                           
                           <Text style={{color: 'white'}}>Checkout</Text>
                         </TouchableOpacity>
                      </View>

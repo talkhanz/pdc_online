@@ -6,12 +6,20 @@ import QRCode from 'react-native-qrcode-svg';
 
 export default class QRcode extends React.Component{
 
+    state ={
+        orderReceived : {},
+
+    }
+
+   
+
+    
     render(){
         return(
             <View style={{flex: 1,alignItems:'center', justifyContent: 'center',backgroundColor:'#75FFCF'}}>
                 <Text style={{fontSize: 30, fontWeight: 'bold'}}>QR Code Screen</Text>
                 <QRCode
-                value="Just some string value"
+                value={this.props.route.params.order}
                 //logo={require('./sehri.jpeg')}
                 logoSize={30}
                 logoBackgroundColor='transparent'
