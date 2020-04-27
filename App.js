@@ -16,6 +16,11 @@ import dinner from './MainAppPages/dinner';
 import cart from './MainAppPages/cart';
 import signup from './MainAppPages/signup';
 import wallet from './DrawerPages/wallet';
+import admin from './MainAppPages/adminhome';
+import Sehri from './MainAppPages/sehri';
+import Iftari from './MainAppPages/iftari';
+import QRcode from './MainAppPages/qrCode';
+import verifyOrder from './MainAppPages/adminVerifyOrder';
 
 const stack = createStackNavigator();
 const drawer = createDrawerNavigator();
@@ -62,20 +67,24 @@ class AppStack extends React.Component {
         <stack.Screen name="lunch" component={lunch} options={{ headerShown: false}}/>
         <stack.Screen name="dinner" component={dinner} options={{ headerShown: false}}/>
         <stack.Screen name="cart" component={cart} options={{ headerShown: false}}/>
+        <stack.Screen name="adminhome" component={admin} options={{ headerShown: false}}/>
+        <stack.Screen name="sehri" component={Sehri} options={{ headerShown: false}}/>
+        <stack.Screen name="iftari" component={Iftari} options={{ headerShown: false}}/>
+        <stack.Screen name="qrCode" component={QRcode} options={{ headerShown: false}}/>
+        <stack.Screen name="adminVerifyOrder" component={verifyOrder} options={{ headerShown: false}}/>
       </stack.Navigator>
     )
   }
 }
 export default class App extends React.Component {
-    render(){
-    return (
-     <NavigationContainer>
-       <drawer.Navigator initialRouteName='Main App' drawerContent={(props) => <CustomDrawerComponent {...props} />}>
-          <drawer.Screen name='Main App' component={AppStack} options={({ route }) => ({gestureEnabled: getGestureEnable(route) })}/>
-          <drawer.Screen name='Wallet' component={wallet} />
-       </drawer.Navigator>  
-     </NavigationContainer>
-    );
-  }
+  render(){
+  return (
+   <NavigationContainer>
+     <drawer.Navigator initialRouteName='Main App' drawerContent={(props) => <CustomDrawerComponent {...props} />}>
+        <drawer.Screen name='Main App' component={AppStack} options={({ route }) => ({gestureEnabled: getGestureEnable(route) })}/>
+        <drawer.Screen name='Wallet' component={wallet} />
+     </drawer.Navigator>  
+   </NavigationContainer>
+  );
 }
-//const index = this.props.navigation.dangerouslyGetState().index
+}

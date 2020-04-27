@@ -5,10 +5,9 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {Text, ScrollView,View, StyleSheet,TouchableOpacity, FlatList,Picker, Alert, Button} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
 
-import {fetchBreakfastMenu} from './fetcher';
+import {fetchIftariMenu} from './fetcher';
 
-
-export default class breakfast extends React.Component {
+export default class sehri extends React.Component {
     state = {
       menuAvailable: '',
       itemList : [],
@@ -16,10 +15,45 @@ export default class breakfast extends React.Component {
       cartList:[],
       count : 0, 
     }
+    renderQuarterIcon(item){
+      if (item.quarter != '-'){
+        return (
+          <Icon  onPress={() => {
+            const subItem = {
+                name: item.item,
+                portion: 'Quarter',
+                price: item.quarter
+            }
+            const arr = this.state.cartList.concat(subItem)
+            this.setState({cartList: arr})
+            this.setState({count: this.state.count+1})
+            }} 
+        name='ios-add' size={40} />
+                  )  
+      }
+    }
+    renderHalfIcon(item){
+        if (item.half != '-'){
+          return (
+            <Icon  onPress={() => {
+              const subItem = {
+                  name: item.item,
+                  portion: 'Half',
+                  price: item.half
+              }
+              const arr = this.state.cartList.concat(subItem)
+              this.setState({cartList: arr})
+              this.setState({count: this.state.count+1})
+              }} 
+          name='ios-add' size={40} />
+                    )  
+        }
+    }
 
     componentDidMount(){
-      fetchBreakfastMenu()
+      fetchIftariMenu()
       .then( received => {
+        console.log(received)
         if(received[0] == 'Menu not available'){
             this.setState({menuAvailable: received[0]})}
           else{
@@ -54,84 +88,52 @@ export default class breakfast extends React.Component {
                 <Text style={styles.titleText}>Menu</Text>
                 <Text style={styles.cart}>{this.state.count}</Text>
 
-                <Icon  onPress={() => this.props.navigation.navigate('cart')} name='md-cart' size={40} />
+                <Icon  onPress={() => this.props.navigation.navigate('cart',{cartItems: this.state.cartList})} name='md-cart' size={40} />
           </View>
           <View >
 
-            <Text style={styles.subtitleText}>
-            Item
-            </Text>
             <FlatList
             extraData={true}
             keyExtractor={ item => item.key}
             data={this.state.itemList}
             renderItem={({item}) => (
-              <View style={styles.row} >
-                  <Text 
-                    style={styles.subtitleText}>
-                      {item.item}{'   '}
-                      
-                  </Text> 
-                  <Picker
-                    selectedValue={item}
-                    style={{height: 50, width: 100}}
-                   >
-                    <Picker.Item label={"Standard:     Rs " +item.standard} value={item.standard} />
-                    <Picker.Item label={"Half:              Rs " + item.half} svalue={item.half} />
-                    <Picker.Item label={"Quarter:        Rs " +item.quarter} value={item.quarter} />
-                  </Picker>
-                  <Icon  onPress={() => {
-                  const arr = this.state.cartList.concat(item)
-                  this.setState({cartList: arr})
+              <View >
+                  <Text style={styles.subtitleText}>{item.item}</Text> 
+                    <View  style={styles.row}>
+                            <Text style={styles.subtitleText}>{'Standard  Rs '}{item.standard}{'   '}</Text> 
+                            <Icon  onPress={() => {
+                                const subItem = {
+                                    name: item.item,
+                                    portion: 'Standard',
+                                    price: item.standard
+                                }
+                                const arr = this.state.cartList.concat(subItem)
+                                this.setState({cartList: arr})
+                                this.setState({count: this.state.count+1})
+                                }} 
+                            name='ios-add' size={40} />
+                    </View>
+                    <View  style={styles.row}>
+                            <Text style={styles.subtitleText}>{'Half  Rs '}{item.half}{'   '}</Text> 
+                            {
+                                this.renderHalfIcon(item)
+                            }
+                    </View>
+                    <View  style={styles.row}>
+                        <Text style={styles.subtitleText}>{'Quarter  Rs '}{item.quarter}{'   '}</Text>{
 
-                    this.setState({count: this.state.count+1})
-                    }} name='ios-add' size={40} />
+                        this.renderQuarterIcon(item)
+                    }
+                     </View>
               </View>
              )}
             />
-            <Button title='CHECKOUT' onPress={() => {
-              // console.log('cartlist: ', typeof this.state.cartList)
-              this.props.navigation.navigate('cart',{cartItems: this.state.cartList})
-              
-              }}></Button>
+
        </View>
        </ScrollView>
      );
     }
   }
-  class cart extends React.Component {
-    state = {
-
-    }
-    
-    render(){
-      console.log('Cart received ',this.props.route.params.cartItems)
-        if(this.props.route.params){
-            return (
-                <View style={styles.titleback}>
-                     <Text style={styles.titleText}>Cart</Text>
-               <Text>{this.props.route.params.cartItems[0]}</Text>
-                     {/* <FlatList
-                     keyExtractor={ item => item.key}
-                     data={this.state.itemList}
-                     renderItem={({item}) => (
-                       <TouchableOpacity>
-                          
-                       </TouchableOpacity>
-                      )}
-                     /> */}
-                </View>
-              );
-        }
-        return(
-            <View style={styles.titleback}>
-                     <Text style={styles.titleText}>Your cart is empty</Text>
-                </View>
-        )
-    }
-  }
-  
- 
   
   const styles = StyleSheet.create({
     titleText: {

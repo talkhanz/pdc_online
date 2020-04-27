@@ -4,6 +4,7 @@ import {NavigationContainer, useNavigationState} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack';
 import firebase from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import {ImageBackground, ActivityIndicator, Button, ScrollView ,StyleSheet,TouchableOpacity, Text, View, Alert, TextInput, Image} from 'react-native';
 
 export default class Login extends React.Component {
@@ -12,7 +13,8 @@ export default class Login extends React.Component {
     verified: false,
     email: '',
     password: '',
-    errorMessage: null
+    errorMessage: null,
+    admin: false
   }
 
   componentDidMount(){
@@ -26,17 +28,23 @@ export default class Login extends React.Component {
 
   async signin(){
       await auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-      .catch(err => {this.setState({errorMessage: err.message})
-      })
-      if(auth().currentUser.emailVerified == false){
+            .catch(err => {this.setState({errorMessage: err.message})
+            })
+      await firestore().collection('Users').doc(auth().currentUser.uid).get()
+      .then(doc => {this.setState({admin: doc.data().admin})})
+
+      if(!this.state.admin && auth().currentUser.emailVerified == false){        
         this.setState({errorMessage: 'Please verify your email'})
         auth().signOut().catch(err => console.log(err))
       }
-  }
+      
+    }
+
 
   render(){
     if(!this.state.user || !this.state.verified){
-      return (
+      if(!this.state.admin){
+        return (
           <ScrollView  contentContainerStyle={{flexGrow: 1}} persistentScrollbar= {true} styles={styles.scroll} >
             <ImageBackground source={require('./pdc_image_blur.png')} style={styles.container}>
             <Text style={styles.titleText}> PDC ONLINE</Text>
@@ -52,8 +60,19 @@ export default class Login extends React.Component {
             <Text style={styles.subtitleText} onPress={() => this.signup('21100311@lums.edu.pk', 'usmanpass')}> New to PDC Online?<Text style={{color: '#E9446A'}} onPress={() => this.props.navigation.navigate('signup')}> Sign up</Text></Text>
             </ImageBackground>
           </ScrollView>         
-      )
+        )
+      }
+      else{
+        this.setState({admin: false})
+        return(
+          <View>{
+            this.props.navigation.navigate('adminhome')
+            }
+          </View>
+        )
+      }
     }
+    console.log('uuuu')
     return(
       <View>{
         this.props.navigation.navigate('Sessions Menu')

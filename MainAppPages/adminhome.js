@@ -20,56 +20,42 @@ marginHorizontal:4,
 marginVertical:6
 */
 
-export default class SessionMenu extends React.Component {
+export default class adminhome extends React.Component {
   
   render(){
     return (    
+        
      <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={styles.scroll} >
-
         <View style={styles.row}>
-            <Icon style={{marginHorizontal: 100}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} />
-            <Text style={styles.titleText}>Sessions</Text>
-              <Icon style={{marginHorizontal:100}} onPress={() => this.props.navigation.navigate('cart')} name='md-cart' size={40} />
+            <Icon style={{marginRight: 90}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} />
+            <Text style={styles.titleText}>Admin Home</Text>
             </View>
         <View style={styles.titleback}>
          
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('sehri')}>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('adminVerifyOrder')}>
             <View style={styles.box}>
-              <Image style={styles.Img} source={require('./sehri.jpeg')} />
-              <Text style={styles.sessioname}>Sehri</Text>
-              </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('iftari')}>
-            <View style={styles.box}>
-              <Image style={styles.Img} source={require('./iftari.jpeg')} />
-              <Text style={styles.sessioname}>Iftari</Text>
-              </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('breakfast')}>
-            <View style={styles.box}>
-              <Image style={styles.Img} source={require('./breakfast.jpeg')} />
-              <Text style={styles.sessioname}>Breakfast</Text>
+              <Image style={styles.Img} source={require('./qrscan.jpg')} />
+              <Text style={styles.sessioname}>Verify Order</Text>
               </View>
           </TouchableOpacity>
           
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('lunch')}>
+          <TouchableOpacity >
             <View style={styles.box}>
-              <Image style={styles.Img} source={require('./lunch.jpeg')} />
-              <Text style={styles.sessioname}>Lunch</Text>
+              <Image style={styles.Img} source={require('./pricechange.jpg')} />
+              <Text style={styles.sessioname}>Change Price</Text>
               </View>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('dinner')}>
+          <TouchableOpacity >
             <View style={styles.box}>
-              <Image style={styles.Img} source={require('./dinner.jpg')} />
-              <Text style={styles.sessioname}>Dinner</Text>
+              <Image style={styles.Img} source={require('./logs.jpg')} />
+              <Text style={styles.sessioname}>Sales Logs</Text>
             </View>
           </TouchableOpacity>
         
         </View>
      </ScrollView>
+     
    );
   }
 }
@@ -136,7 +122,8 @@ const styles = StyleSheet.create({
   },
   row: {
     flex: 1,
-    justifyContent: 'center',
+    marginLeft: 10,
+    //justifyContent: 'center',
     flexDirection: 'row'
   }   
  });

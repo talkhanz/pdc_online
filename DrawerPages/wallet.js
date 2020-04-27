@@ -11,8 +11,11 @@ export async function showWallet(){
                     .catch(err => console.log(err))
     return userData.wallet
 }
-export function updateWallet(newValue){
-    this.setState({wallet: this.state.wallet+newValue}) 
+export async function updateWallet(newValue){
+    await this.setState({wallet: this.state.wallet+newValue}) 
+    firestore().collection('Users').doc(user.uid).update({
+        wallet: this.state.wallet
+    })
 }
 
 export default class Wallet extends React.Component{

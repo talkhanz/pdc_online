@@ -79,6 +79,12 @@ target 'PDC' do
 
   pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
+  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
+
+  pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
+
   target 'PDCTests' do
     inherit! :complete
     # Pods for testing
