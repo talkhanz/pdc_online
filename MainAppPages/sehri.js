@@ -4,16 +4,17 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Text, ScrollView,View, StyleSheet,TouchableOpacity, FlatList,Picker, Alert, Button, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
-
+import FastImage from 'react-native-fast-image'
+import firestore, { firebase } from '@react-native-firebase/firestore';
 import {fetchSehriMenu} from './fetcher';
 
 export default class sehri extends React.Component {
     state = {
       menuAvailable: '',
       itemList : [],
-      itemListCopy: [],
       cartList:[],
-      count : 0, 
+      count : 0,
+      uri: require('./images/notexist.gif')
     }
     renderQuarterIcon(item){ // checks for item.quarter property and if icon should be rendered
       if (item.quarter != '-'){
@@ -52,26 +53,23 @@ export default class sehri extends React.Component {
     componentDidMount(){ //built in function runs when the component gets rendered for the first time
       fetchSehriMenu()  // extracts sehri menu  
       .then( received => {
-        console.log(received)
         if(received[0] == 'Menu not available'){
             this.setState({menuAvailable: received[0]})}
-          else{
-            this.setState({itemList: received})
-            
-            this.setState({itemListCopy: received})
-          }
+        else{
+          this.setState({itemList: received})
+        }
       })
       .catch(err => console.log(err))
     }
     render(){    
       if(this.state.menuAvailable == 'Menu not available'){ //checks if menu available
           return(
-            //scroll tags allow us to scroll
+            //scroll component allows us to scroll
             <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={styles.scroll} >
             <View style={styles.row} /*styles.row helps render comps horizontally  */> 
-              <Icon style={{marginHorizontal: 122}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} /* on clicking this icon we get a side tab/drawer */ />
+              <Icon style={{marginLeft: '3%'}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} /* on clicking this icon we get a side tab/drawer */ />
                 <Text style={styles.titleText}>Menu</Text>
-                <Icon onPress={() => this.props.navigation.navigate('cart')} name='md-cart' size={40} /*clicking cart icon navigates to cart screen*/ /> 
+                <Icon style={{marginRight: '3%'}} onPress={() => this.props.navigation.navigate('cart')} name='md-cart' size={40} /*clicking cart icon navigates to cart screen*/ /> 
             </View>
             <View style={styles.titleback}>
             <Text style={{marginVertical: 10,fontSize: 20,paddingVertical: 250}}>Menu not available</Text>
@@ -82,22 +80,27 @@ export default class sehri extends React.Component {
       return ( //otherwise will display menu 
         <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={styles.scroll} >
           <View style={styles.row}>
-              <Icon style={{marginRight:110}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} />
+              <Icon style={{marginLeft: '3%'}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} />
                 <Text style={styles.titleText}>Menu</Text>
                 <Text style={styles.cart}>{this.state.count}</Text>
 
-                <Icon  onPress={() => this.props.navigation.navigate('cart',{cartItems: this.state.cartList})} name='md-cart' size={40} /* allows us to  pass cartList data to cart screen on Icon Press*//>  
+                <Icon style={{marginLeft: '3%'}} onPress={() => this.props.navigation.navigate('cart',{cartItems: this.state.cartList})} name='md-cart' size={40} /* allows us to  pass cartList data to cart screen on Icon Press*//>  
           </View>
-          <View >
 
+          <View >
             <FlatList
+            removeClippedSubviews={true}
             extraData={true}
             keyExtractor={ item => item.key}
             data={this.state.itemList} // we get our menu from itemList and storing it in data prop 
              renderItem={({item}) => ( // each item is being rendered to screen using renderItem prop
               <View style={{alignItems:'center'}}>
-                <Image source={'./images/tom.gif'}></Image>
                   <Text style={{marginVertical: 10,fontSize: 30,}}>{item.item}</Text> 
+                  <FastImage
+                      style={{ width: 200, height: 200 }}
+                      source={require('./images/DaalMoongMasoor.gif')}
+                      resizeMode={FastImage.resizeMode.contain}
+                  />
                     <View  style={{flex: 1,justifyContent: 'center',flexDirection: 'row'}} /*flexDirection row renders components horizontally */> 
                             <Text style={styles.subtitleText}>{'Standard  Rs '}{item.standard}{'   '}</Text> 
                             <Icon  onPress={() => { /* + icon for adding item */
@@ -152,7 +155,7 @@ export default class sehri extends React.Component {
       },
       row: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         flexDirection: 'row',
         backgroundColor:'#f46a'
       },
@@ -160,7 +163,6 @@ export default class sehri extends React.Component {
         fontSize: 30,
         fontWeight: "bold",
         color: 'black',
-        marginLeft:122
       }
    });
   

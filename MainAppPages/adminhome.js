@@ -1,13 +1,9 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 
-import {NavigationContainer} from '@react-navigation/native';
-import {createDrawerNavigator} from 'react-navigation-drawer'
-import {createAppContainer} from 'react-navigation'
-import {createStackNavigator} from '@react-navigation/stack';
 import auth from '@react-native-firebase/auth';
 import Icon from 'react-native-vector-icons/Ionicons'
-import {SafeAreaView, ImageBackground, Button, StyleSheet, Text, View, Alert, Image, ScrollView,TouchableOpacity} from 'react-native';
+import {Button, StyleSheet, Text, View, Image, ScrollView,TouchableOpacity} from 'react-native';
 
 export default class adminhome extends React.Component {
   
@@ -27,19 +23,19 @@ export default class adminhome extends React.Component {
               <Text style={styles.sessioname}>Verify Order</Text>
               </View>
           </TouchableOpacity>
-          
-          <TouchableOpacity >
-            <View style={styles.box}>
-              <Image style={styles.Img} source={require('./pricechange.jpg')} />
-              <Text style={styles.sessioname}>Change Price</Text>
-              </View>
-          </TouchableOpacity>
 
-          <TouchableOpacity >
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('salesLogs')} >
             <View style={styles.box}>
               <Image style={styles.Img} source={require('./logs.jpg')} />
               <Text style={styles.sessioname}>Sales Logs</Text>
             </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('adminManageVouchers')} /* navigates to verifyOrder page onPress*/>  
+            <View style={styles.box}>
+              <Image style={styles.Img} source={require('./voucher.png')} />
+              <Text style={styles.sessioname}>Manage Vouchers</Text>
+              </View>
           </TouchableOpacity>
         
         </View>

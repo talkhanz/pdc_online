@@ -19,19 +19,19 @@ export default class Login extends React.Component {
 
   componentDidMount(){      // Built in function that runs when component renders for the first time
     auth().onAuthStateChanged( user => {
-      this.setState({user: user})                     //When a user logs in, the variable user in state is set to the user's unique details
-      if(user != null){                            
-        this.setState({verified: user.emailVerified})
+      this.setState({user: user})                     // When a user logs in, the variable user in state is set to the user's unique details
+      if(user != null){                               // After a user logs in, this condition becomes true 
+        this.setState({verified: user.emailVerified}) // When a user logs in, the verified variable in state is set to the value of verfied of the user
       }
     })
   }
 
-  async signin(){
-      await auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-            .catch(err => {this.setState({errorMessage: err.message})
+  async signin(){                                                                    // A function for sign in that is run when the user presses login after entering their details
+      await auth().signInWithEmailAndPassword(this.state.email, this.state.password) // Details of the username and password are checked from the database. 
+            .catch(err => {this.setState({errorMessage: err.message})                // In case of wrongly entered details, an error is set to the errorMessage variable in state
             })
-      await firestore().collection('Users').doc(auth().currentUser.uid).get()
-      .then(doc => {this.setState({admin: doc.data().admin})})
+      await firestore().collection('Users').doc(auth().currentUser.uid).get()        // Details of the user are fetched after he/she logs in successfully 
+      .then(doc => {this.setState({admin: doc.data().admin})})                       // admin variable is set accroding to the value stored in the firebase 
 
       if(!this.state.admin && auth().currentUser.emailVerified == false){        
         this.setState({errorMessage: 'Please verify your email'})
@@ -72,7 +72,6 @@ export default class Login extends React.Component {
         )
       }
     }
-    console.log('uuuu')
     return(
       <View>{
         this.props.navigation.navigate('Sessions Menu')

@@ -15,7 +15,7 @@ export async function updateWallet(newValue){
     await this.setState({wallet: this.state.wallet+newValue}) 
     firestore().collection('Users').doc(user.uid).update({
         wallet: this.state.wallet
-    })
+    }).catch(err => console.log(err))
 }
 
 export default class Wallet extends React.Component{
@@ -32,7 +32,7 @@ export default class Wallet extends React.Component{
 
     render(){
         return(
-            <View style={{flex: 1,alignItems:'center', justifyContent: 'center',backgroundColor:'#75FFCF'}}>
+            <View style={{flex: 1,alignItems:'center', justifyContent: 'center',backgroundColor:'yellowgreen'}}>
                 <Text style={{fontSize: 30, fontWeight: 'bold'}}>Wallet Value: Rs {this.state.wallet}</Text>
                 <Button title='Add' onPress={() => this.updateWallet(1)}></Button>
             </View>

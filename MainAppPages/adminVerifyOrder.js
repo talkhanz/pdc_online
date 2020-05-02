@@ -5,28 +5,46 @@ import firestore from '@react-native-firebase/firestore';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
 export default class verifyOrder extends React.Component{
+    state = {
+        verified: false
+    }
+
+    onSuccess = QRData => {
+        console.log(QRData.data)
+        firestore().collection('Orders').doc(QRData.data).update({
+            verified: true
+        })
+        .then(()=> {
+            this.setState({verified: true}) 
+        })
+        .catch(err => console.log(err))
+    }
 
     render(){
+        if(this.state.verified == false){
+            return(
+                <View style={{flex: 1,alignItems:'center', justifyContent: 'center',backgroundColor:'#75FFCF'}}>
+                    <Text style={styles.titleText}>Verify Order</Text>
+                    <QRCodeScanner
+                        onRead={this.onSuccess}
+                        //flashMode={QRCodeScanner.Constants.FlashMode.auto}
+                        topContent={
+                        <Text style={styles.subtitleText}>
+                            Scan the QR code on customer's mobile device
+                        </Text>
+                        }
+                        cameraStyle={{marginVertical:50}}
+                    />
+                </View>
+                )
+        }
+      else{
         return(
             <View style={{flex: 1,alignItems:'center', justifyContent: 'center',backgroundColor:'#75FFCF'}}>
-                <Text style={styles.titleText}>Verify Order</Text>
-                <QRCodeScanner
-                    onRead={console.log('reading QR')}
-                    //flashMode={QRCodeScanner.Constants.FlashMode.auto}
-                    topContent={
-                    <Text style={styles.subtitleText}>
-                        Scan the QR code on customer's mobile device
-                    </Text>
-                    }
-                    cameraStyle={{marginVertical:50}}
-                    bottomContent={
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={styles.subtitleText}>Done!</Text>
-                    </TouchableOpacity>
-                    }
-                />
+                <Text style={styles.titleText}>Order Verified!</Text>
             </View>
             )
+      }
     }
 }
 const styles = StyleSheet.create({

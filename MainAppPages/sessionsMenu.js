@@ -16,11 +16,11 @@ export default class SessionMenu extends React.Component {
      <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={styles.scroll} > 
         <View style={styles.row}>
             
-            <Icon style={{marginHorizontal: 100}} onPress={() =>           //On tapping the three horizontal bar icon on the top left, this fuction is called which shows the drawer
+            <Icon style={{marginLeft: '3%'}} onPress={() =>           //On tapping the three horizontal bar icon on the top left, this fuction is called which shows the drawer
               this.props.navigation.openDrawer()} name='md-menu' size={40} // This is our drawer that has been defined with the repective screens in App.js
               />       
             <Text style={styles.titleText}>Sessions</Text>
-              <Icon style={{marginHorizontal:100}} onPress={() =>                 //This function runs when the shopping cart icon in the top right corener is pressed
+              <Icon style={{marginRight: '3%'}} onPress={() =>                 //This function runs when the shopping cart icon in the top right corener is pressed
                 this.props.navigation.navigate('cart')} name='md-cart' size={40} //This leads us to our shopping cart screen that has all the items that we added to it. In our shopping cart screen we will also place our order
                 /> 
             </View>
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({   //This stylesheet is associated only with t
   row: {
     flex: 1,
     backgroundColor:'#f46a',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     flexDirection: 'row'
   }   
  });

@@ -21,6 +21,9 @@ import Sehri from './MainAppPages/sehri';
 import Iftari from './MainAppPages/iftari';
 import QRcode from './MainAppPages/qrCode';
 import verifyOrder from './MainAppPages/adminVerifyOrder';
+import salesLogs from './MainAppPages/salesLogs';
+import review from './DrawerPages/Review';
+import voucherManager from './MainAppPages/adminManageVouchers';
 
 const stack = createStackNavigator();        // stack container for the app main screens 
 const drawer = createDrawerNavigator();      // drawer/side tab for screens in the side tab
@@ -72,6 +75,8 @@ class AppStack extends React.Component {    // Stack of all screens for navigati
         <stack.Screen name="iftari" component={Iftari} options={{ headerShown: false}}/>
         <stack.Screen name="qrCode" component={QRcode} options={{ headerShown: false}}/>
         <stack.Screen name="adminVerifyOrder" component={verifyOrder} options={{ headerShown: false}}/>
+        <stack.Screen name="salesLogs" component={salesLogs} options={{ headerShown: false}}/>
+        <stack.Screen name="adminManageVouchers" component={voucherManager} options={{ headerShown: false}}/>
       </stack.Navigator>
     )
   }
@@ -83,6 +88,7 @@ export default class App extends React.Component {  // this is the first compone
      <drawer.Navigator initialRouteName='Main App' drawerContent={(props) => <CustomDrawerComponent {...props} />}>
         <drawer.Screen name='Main App' component={AppStack} options={({ route }) => ({gestureEnabled: getGestureEnable(route) })}/>
         <drawer.Screen name='Wallet' component={wallet} />
+        <drawer.Screen name='Post a Review' component={review} />
      </drawer.Navigator>  
    </NavigationContainer>
   );
