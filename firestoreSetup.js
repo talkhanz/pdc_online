@@ -1,12 +1,12 @@
 import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 
-const db = firebase.firestore();
-  
-export function addUser(user){
+const db = firestore();
 
-        db.collection('Users').doc('21100313')
-        .update(user)
+export function addUser(userID,user){
+
+        db.collection('Users').doc(userID)
+        .set(user)
         .then(() => {
             console.log('User added!');
         });
@@ -14,17 +14,20 @@ export function addUser(user){
 
 export async function showUser(){
     
-    var toReturn = []
+  var IDs = []
+  var Fields = []
 
-    await firebase.firestore().collection('Users').get()
-      .then( snapshot => {
-          const ListOfUsers = []
-          snapshot.forEach( doc => {
-            ListOfUsers.push(doc.data())
-          })  
-          toReturn = ListOfUsers
+  await db.collection('Users').get()
+  .then(snapshot => {
+      snapshot.forEach( doc => {
+          Fields.push(doc.data())
+          IDs.push(doc.id)
       })
-      .catch(error => console.log(error))
+  })
+  .catch(err => console.log(err))
 
-      return toReturn
+  return {
+    key1: IDs,
+    key2: Fields
+  }
 }

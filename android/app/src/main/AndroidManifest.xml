@@ -2,12 +2,14 @@
   package="com.pdc">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"
-      android:icon="@mipmap/ic_launcher"
-      android:roundIcon="@mipmap/ic_launcher_round"
+      android:icon="@mipmap/pdc_online_icon"
+      android:roundIcon="@mipmap/pdc_online_icon"
       android:allowBackup="false"
       android:theme="@style/AppTheme">
       <activity
