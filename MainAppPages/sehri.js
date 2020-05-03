@@ -82,9 +82,10 @@ export default class sehri extends React.Component {
           <View style={styles.row}>
               <Icon style={{marginLeft: '3%'}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} />
                 <Text style={styles.titleText}>Menu</Text>
-                <Text style={styles.cart}>{this.state.count}</Text>
-
-                <Icon style={{marginLeft: '3%'}} onPress={() => this.props.navigation.navigate('cart',{cartItems: this.state.cartList})} name='md-cart' size={40} /* allows us to  pass cartList data to cart screen on Icon Press*//>  
+                  <View style={{flexDirection:'row'}}>
+                      <Text style={styles.cart}>{this.state.count}</Text>
+                      <Icon onPress={() => this.props.navigation.navigate('cart',{cartItems: this.state.cartList})} name='md-cart' size={40} /* allows us to  pass cartList data to cart screen on Icon Press*//>  
+                  </View>
           </View>
 
           <View >

@@ -12,26 +12,13 @@ export default class QRcode extends React.Component{
     }
    
     checkVerified(){
-        var intervalID
-
-        if(this.state.verify == false){
-            intervalID =setInterval(() => {
-                console.log(intervalID)
-                firestore().collection('Orders').doc(this.props.route.params.orderID).get()
-                .then( result => {
-                    if(result.data().verified == true){
-                        this.setState({verify : true})
-                    }
-                })
-                .catch(err => console.log(err)) 
-            },1000) 
-        }
-        else{
-            console.log('out of if')
-            clearInterval(intervalID)
-            console.log('cleared interval')
-        }
-        
+        let listener = firestore().collection('Orders').doc(this.props.route.params.orderID).onSnapshot(docSnapshot => {
+            if(docSnapshot.data().verified == true){
+                this.setState({verify: true})
+                listener()
+            }
+        },
+        err => console.log(err))
     }
     
     render(){
@@ -40,12 +27,14 @@ export default class QRcode extends React.Component{
                 <View style={{flex: 1,alignItems:'center', justifyContent: 'center',backgroundColor:'#75FFCF'}}>
                     <Text style={{fontSize: 30, fontWeight: 'bold'}}>{this.checkVerified()}QR Code Screen</Text>
                     <QRCode
+                    size={200}
                     value={this.props.route.params.orderID}
-                    //logo={require('./sehri.jpeg')}
-                    logoSize={30}
-                    logoBackgroundColor='transparent'
+                    logo={require('./pdc_online_icon.png')}
+                    logoSize={50}
+                    logoBackgroundColor='white'
+                    logoMargin={1}
+                    logoBorderRadius={30}
                     />
-                   
                 </View>
                 ) 
         }

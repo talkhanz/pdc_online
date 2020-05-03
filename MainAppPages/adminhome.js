@@ -1,19 +1,34 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-
+import { StackActions } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import Icon from 'react-native-vector-icons/Ionicons'
-import {Button, StyleSheet, Text, View, Image, ScrollView,TouchableOpacity} from 'react-native';
+import {Button, StyleSheet, Text, View, Image,BackHandler,ScrollView,TouchableOpacity} from 'react-native';
 
 export default class adminhome extends React.Component {
+  componentDidMount(){
+    this.backhandler = BackHandler.addEventListener("hardwareBackPress", () => {
+      if(this.props.navigation.isFocused()){
+        BackHandler.exitApp() 
+      }
+    })
+  }
   
   render(){
     return (    
         
      <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={styles.scroll} /* allows us to scroll */ > 
         <View style={styles.row}>
-            <Icon style={{marginRight: 90}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} /* function in onPress prop opens sidetab/drawer*/ /> 
-            <Text style={styles.titleText}>Admin Home</Text>
+          <Text style={styles.titleText}>Admin Home</Text>
+          <View style={{marginRight:'3%'}}>
+          <Icon  onPress={() =>{
+              auth().signOut().catch(err => console.log(err));            // signs out user
+              this.props.navigation.closeDrawer()                         // closes the drawer
+              this.props.navigation.dispatch(StackActions.popToTop());    // clears all screens from stack except 1st login screen so user is navigated to login screen
+            }} style={{marginLeft: 17}} name='ios-log-out' size={40} /* This is our drawer that has been defined with the repective screens in App.js */ />    
+            <Text style={{fontSize:17, marginTop:-5}}>Sign Out</Text>
+          </View>
+
             </View>
         <View style={styles.titleback}>
          
@@ -35,6 +50,13 @@ export default class adminhome extends React.Component {
             <View style={styles.box}>
               <Image style={styles.Img} source={require('./voucher.png')} />
               <Text style={styles.sessioname}>Manage Vouchers</Text>
+              </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('breakfast')} /* navigates to verifyOrder page onPress*/>  
+            <View style={styles.box}>
+              <Image style={styles.Img} source={require('./qrscan.jpg')} />
+              <Text style={styles.sessioname}>Feedback</Text>
               </View>
           </TouchableOpacity>
         
@@ -62,7 +84,6 @@ const styles = StyleSheet.create({
   },
   cart:{
     alignItems: 'center',
-    
     paddingLeft: 100 ,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -70,9 +91,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 20,
     height: 45,
     width : 45
-
   },
- 
   titleback: {
     backgroundColor:'navajowhite',
     alignSelf: 'center',
@@ -83,8 +102,8 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 30,
+    marginRight: '10%',
     fontWeight: "bold",
-    paddingTop: '2%',
     color: 'black'
   },
   Img: {
@@ -107,8 +126,10 @@ const styles = StyleSheet.create({
   },
   row: {
     flex: 1,
-    marginLeft: 10,
-    //justifyContent: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems:'center',
+    backgroundColor:'#f46a',
+    height:60
   }   
  });

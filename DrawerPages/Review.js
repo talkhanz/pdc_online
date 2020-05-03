@@ -3,16 +3,8 @@ import auth from '@react-native-firebase/auth';
 import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import {ImageBackground, ActivityIndicator, Button, FlatList ,StyleSheet,TouchableOpacity, Text, View, Alert, TextInput, Image} from 'react-native';
-/*
-const db = firestore()
+import moment from "moment";
 
-db.collection('Reviews').get().then(snapshot =>{
-  snapshot.forEach(doc=>{
-    showreviews(doc)
-  }) 
-})
-
-*/
 export default class Review extends React.Component{
   
   constructor(props){
@@ -33,7 +25,10 @@ export default class Review extends React.Component{
           name : this.state.name,
           email : this.state.email,
           review: this.state.review,
-          created: firebase.firestore.Timestamp.fromDate(new Date())
+          created: firebase.firestore.Timestamp.fromDate(new Date()),
+          time: moment()
+          .utcOffset('+05:00')
+          .format('DD-MM-YYYY hh:mm:ss a')
       }).then(()=> {
           reviewCollection.get().then(snapshot => {
            
@@ -74,17 +69,16 @@ export default class Review extends React.Component{
             <Text style={styles.subtitleText}>Review</Text>
             <TextInput style={styles.TextInput} onChangeText={input => this.setState({review:input})} value={this.state.review} placeholder='Write your review here' textAlign={'center'} ></TextInput>
             <Button styles={styles.button} title='Submit' onPress={() => this.publishreview() }></Button>        
-            
-            <Text>Name  Review   Created at</Text>
+    
             <FlatList
                 keyExtractor={ item => item.created.seconds}
                 data={this.state.pastreviews}
                 renderItem={({item})=>{
                     return(
-                      <View>
-                        <Text>{item.name}</Text>
-                        <Text>{item.review}</Text>
-                        <Text>{item.created.date}</Text>
+                      <View style={styles.details}>
+                        <Text style={styles.reviewername}>{item.name}</Text>
+                        <Text style={styles.review}>{item.review}</Text>
+                        <Text style={styles.Time}>Made on: {item.time}</Text>
                       </View>
                     )}
               }
@@ -100,13 +94,32 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: 'gainsboro',
       alignItems: 'center'
+      
+    },
+    details: {
+      alignItems:'flex-start'
     },
     reviewername: {
+      fontSize: 20,
       fontWeight: "bold",
-      color: 'black',
-      textShadowColor: 'black',
-      textShadowOffset:  {width: -5, height: 5} ,
-      textShadowRadius: 20,
+      color: 'black'
+    },
+    review: {
+      fontSize: 15,
+      backgroundColor: 'pink'
+    },
+    Time:{
+      alignContent: 'flex-end'
+    },
+    box: {
+      justifyContent:'flex-end',
+      borderWidth: 5,
+      borderTopLeftRadius: 10,
+      borderTopRightRadius: 10,
+      borderBottomRightRadius: 10,
+      borderBottomLeftRadius: 10,
+      height: 100,
+      width: 400
     },
     subtitleText: {
         marginVertical: 7,
@@ -134,7 +147,8 @@ const styles = StyleSheet.create({
       height: 52,
       width: '20%',
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      paddingBottom: 100
     }   
   });
   

@@ -10,7 +10,6 @@ export default class verifyOrder extends React.Component{
     }
 
     onSuccess = QRData => {
-        console.log(QRData.data)
         firestore().collection('Orders').doc(QRData.data).update({
             verified: true
         })

@@ -7,6 +7,7 @@ import firestore from '@react-native-firebase/firestore';
 import Icon from 'react-native-vector-icons/Ionicons'
 import auth from '@react-native-firebase/auth';
 
+import Wallet from '../DrawerPages/wallet'
 import {showWallet, updateWallet} from '../DrawerPages/wallet'
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -24,7 +25,6 @@ export default class cart extends React.Component {
 
     async componentDidMount(){
       this.setState({itemList: this.props.route.params.cartItems})
-      this.setState({wallet: await showWallet()})
     }
 
     calculateTotal(list){
@@ -39,7 +39,7 @@ export default class cart extends React.Component {
     async checkWallet(total){
       const wallet = await showWallet()
       if(wallet < total){
-        this.setState({errorMessage: 'Insufficient Funds in Wallet'})
+        this.setState({errorMessage: 'Insufficient Funds in Wallet!'})
       }
       else{
         const uid = await auth().currentUser.uid
@@ -55,17 +55,36 @@ export default class cart extends React.Component {
         await firestore().collection('Users').doc(uid).update({
           currentOrder: this.state.order
         })
-        this.props.navigation.navigate('qrCode',{orderID: orderID})
+        Alert.alert("Confirm Payment" , `Rs. ${total} are about to be deducted from your wallet.`,
+          [
+            {
+              text: "Cancel",
+              style: "cancel"
+            },
+            { text: "OK", onPress: async () => {
+              await updateWallet(total, 'deduct')
+              this.props.navigation.navigate('qrCode',{orderID: orderID})
+            }}
+          ],
+          { cancelable: false }
+        );
       }
     }
-  
 
     render(){
         if(this.props.route.params){
+          showWallet().then((response)=> this.setState({wallet: response}))
             return (
               <ScrollView>
+                 <View style={styles.row}>
+                    
+                    <Icon style={{marginLeft: '3%'}} onPress={() =>           //On tapping the three horizontal bar icon on the top left, this fuction is called which shows the drawer
+                      this.props.navigation.openDrawer()} name='md-menu' size={40} // This is our drawer that has been defined with the repective screens in App.js
+                      />       
+                    <Text style={styles.titleText}>Cart</Text>
+
+                 </View>
                    <View style={styles.titleback}>
-                     <Text style={styles.titleText}>Cart</Text>
                      <FlatList
                      keyExtractor={ item => item.key}
                      data={this.state.itemList}
@@ -95,8 +114,8 @@ export default class cart extends React.Component {
                      />
                      <Text style={{marginVertical: 10,fontSize: 30}}>Total: { this.calculateTotal(this.state.itemList)} </Text>
                      <Text style={{marginVertical: 10,fontSize: 30}}>Wallet: { this.state.wallet} </Text>
-                     <View >
-                        <Text style={styles.subtitleText}>{this.state.errorMessage}</Text>
+                     <View style={{alignItems:'center'}}>
+                        <Text style={{marginVertical:20,fontSize:25, marginHorizontal:0}}>{this.state.errorMessage}</Text>
                         <TouchableOpacity style={styles.button} onPress={() => {
                           const total = this.calculateTotal(this.state.itemList)
                           const CheckoutStatus = this.checkWallet(total)
@@ -123,7 +142,7 @@ export default class cart extends React.Component {
         fontSize: 30,
         fontWeight: "bold",
         color: 'black',
-        backgroundColor:'pink',
+        marginLeft: '32%'
       },
       button: {
         backgroundColor: '#E9446A',
@@ -147,6 +166,11 @@ export default class cart extends React.Component {
         borderTopRightRadius: 20,
         borderBottomRightRadius: 20,
         borderBottomLeftRadius: 20,
-      }
+      },
+      row: {
+        flex: 1,
+        backgroundColor:'#f46a',
+        flexDirection: 'row'
+      }  
    });
   

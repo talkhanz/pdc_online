@@ -7,9 +7,16 @@ import {createAppContainer} from 'react-navigation'
 import {createStackNavigator} from '@react-navigation/stack';
 import auth from '@react-native-firebase/auth';
 import Icon from 'react-native-vector-icons/Ionicons'
-import {SafeAreaView, ImageBackground, Button, StyleSheet, Text, View, Alert, Image, ScrollView,TouchableOpacity} from 'react-native';
+import {SafeAreaView, ImageBackground, Button, StyleSheet, BackHandler,Text, View, Alert, Image, ScrollView,TouchableOpacity} from 'react-native';
 
 export default class SessionMenu extends React.Component {
+  componentDidMount(){
+    this.backhandler = BackHandler.addEventListener("hardwareBackPress", () => {
+      if(this.props.navigation.isFocused()){
+        BackHandler.exitApp() 
+      }
+    })
+  }
   
   render(){
     return (    
