@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "509977872842",
+    "firebase_url": "https://pdc-online.firebaseio.com",
+    "project_id": "pdc-online",
+    "storage_bucket": "pdc-online.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:509977872842:android:38b7e99ee8f7419b376733",
+        "android_client_info": {
+          "package_name": "com.pdc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "509977872842-a5vqk5b9onhrbduhmc5f5eb6lfkbelgs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pdc",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "509977872842-hdc5m97gauum6src7f6n7c4h258pitju.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAK4B7rYDD884uet672cmDutiItOwZSW5w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "509977872842-hdc5m97gauum6src7f6n7c4h258pitju.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
