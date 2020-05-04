@@ -59,10 +59,10 @@ export default class Login extends React.Component {
             <ImageBackground source={require('./pdc_image_blur.png')} style={styles.container}>
             <Text style={styles.titleText}> PDC ONLINE</Text>
             {this.state.errorMessage && <Text style={styles.subtitleText}>{this.state.errorMessage}</Text>}
-            <Text style={styles.subtitleText}> Email</Text>
-            <TextInput style={styles.TextInput} onChangeText={email => this.setState({email: email})} value={this.state.email} placeholder='Email' textAlign={'center'}  ></TextInput>
-            <Text style={styles.subtitleText}> Password</Text>
-            <TextInput style={styles.TextInput} onChangeText={pass => this.setState({password: pass})} value={this.state.password} placeholder='password' secureTextEntry textAlign={'center'} ></TextInput>
+
+            <TextInput style={styles.TextInput} onChangeText={email => this.setState({email: email})} value={this.state.email} placeholderTextColor='white' placeholder='Email' textAlign={'center'}  ></TextInput>
+            
+            <TextInput style={styles.TextInput} onChangeText={pass => this.setState({password: pass})} value={this.state.password} placeholderTextColor='white' placeholder='Password' secureTextEntry textAlign={'center'} ></TextInput>
             <TouchableOpacity onPress={() => this.signin()} style={styles.button}>
                 <Text style={{color: 'white', fontSize: 17}} title="Login" >Login</Text>
             </TouchableOpacity>
@@ -90,6 +90,10 @@ export default class Login extends React.Component {
     }
   }
 }
+/*
+<Text style={styles.subtitleText}>Email</Text>
+<Text style={styles.subtitleText}>Password</Text>
+*/
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -102,11 +106,13 @@ const styles = StyleSheet.create({
     color: 'white',
     height : 100,
     textShadowColor: 'black',
+    marginBottom: '3%',
     textShadowOffset:  {width: -5, height: 5} ,
     textShadowRadius: 20
   },
   subtitleText: {
-    marginVertical: 7,
+    marginVertical: '2%',
+    paddingTop: 10,
     fontSize: 22, 
     color: 'white',
     textShadowColor: 'black',
@@ -114,15 +120,17 @@ const styles = StyleSheet.create({
     textShadowRadius: 10
   },
   TextInput:{
-    marginVertical: 5,
+    marginVertical: '6%',
     height: 40, 
-    width: 180,
-    backgroundColor: 'white',
+    width: '60%',
+    color: 'white',
     borderColor: 'black', 
-    borderWidth: 1 ,
+    borderBottomWidth: 1,
+    borderColor: 'darkgrey'
   }, 
   button: {
     backgroundColor: '#E9446A',
+    marginTop: 30,
     marginHorizontal: 5,
     marginVertical: 15,
     borderRadius: 4,

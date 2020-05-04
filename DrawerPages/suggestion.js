@@ -28,7 +28,7 @@ export default class Suggestion extends React.Component{
           .utcOffset('+05:00')
           .format('DD-MM-YYYY hh:mm:ss a')
       }).then(()=> {
-        this.props.navigation.navigate('Sessions Menu') 
+            Alert.alert("Your suggestion has been submitted. Thank you!")
         })
       .catch((err)=> {
           console.log(err)
@@ -41,36 +41,33 @@ export default class Suggestion extends React.Component{
            <Text style={styles.subtitleText}> Help Us Improve! </Text>
             <Image style={styles.Img} source={require('../MainAppPages/images/suggestion-box.jpg')}
               />
-            <TextInput style={styles.TextInput} onChangeText={input => this.setState({suggestion:input})} value={this.state.suggestion} placeholder='Write your suggestion here' textAlign={'center'} ></TextInput>
-            <Button color={'#9e79d9'} title='Submit' onPress={() => this.publishSuggestion() }></Button>        
+            <TextInput style={styles.TextInput} onChangeText={input => this.setState({suggestion:input})} value={this.state.suggestion} placeholderTextColor={'dimgrey'}  placeholder='Write your suggestion here' textAlign={'center'} ></TextInput>
+            <TouchableOpacity onPress={() => this.publishSuggestion()} style={styles.button}>
+                <Text style={{color: 'white', fontSize: 17}} title="Submit" >Submit</Text>
+            </TouchableOpacity>        
         </View>
     )
   }
 }
-
+//<Button color={'#9e79d9'} title='Submit' onPress={() => this.publishSuggestion() }></Button>
 const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#e2ffdb',
       alignItems: 'center',
       justifyContent: 'center'
-      
     },
     subtitleText: {
       marginTop: '0%',
       marginBottom: '4%',
       fontSize: 33, 
-      color: 'white',
-      textShadowColor: 'black',
-      textShadowOffset:  {width: -3, height: 3} ,
-      textShadowRadius: 25
+      color: 'black'
     },
     TextInput:{
       marginTop: '1%',
       marginBottom: '1%',
       height: 40, 
       width: '60%',
-      borderColor: 'black', 
       borderBottomWidth: 1,
       marginBottom: '4%',
       borderColor: 'darkgrey'
@@ -81,8 +78,19 @@ const styles = StyleSheet.create({
       borderBottomRightRadius: 20,
       borderBottomLeftRadius: 20,
       marginBottom: '2%',
-      height: '28%',
-      width: '88%'
-    }  
+      height: 220,
+      width: 376
+    },
+    button: {
+      backgroundColor: '#a981e6',
+      marginVertical: '4%',
+      borderRadius: 4,
+      borderColor: 'black',
+      borderWidth: 1,
+      height: 53,
+      width: 140,
+      alignItems: 'center',
+      justifyContent: 'center'
+    }
   });
   

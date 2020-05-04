@@ -17,7 +17,7 @@ export default class adminhome extends React.Component {
   render(){
     return (    
         
-     <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={styles.scroll} /* allows us to scroll */ > 
+     <ScrollView backgroundColor={'lightgrey'} persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={styles.scroll} /* allows us to scroll */ > 
         <View style={styles.row}>
           <Text style={styles.titleText}>Admin Home</Text>
           <View style={{marginRight:'3%'}}>
@@ -75,7 +75,9 @@ const styles = StyleSheet.create({
   },
   box: {
     alignItems: 'center',
+    marginBottom: '2%',
     borderWidth: 5,
+    backgroundColor: 'white',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     borderBottomRightRadius: 20,
@@ -93,7 +95,6 @@ const styles = StyleSheet.create({
     width : 45
   },
   titleback: {
-    backgroundColor:'navajowhite',
     alignSelf: 'center',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -109,8 +110,6 @@ const styles = StyleSheet.create({
   Img: {
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
-    borderBottomLeftRadius: 20,
     height: 220,
     width: 380
   },

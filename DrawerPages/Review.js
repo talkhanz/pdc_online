@@ -4,7 +4,7 @@ import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import {ImageBackground, ActivityIndicator, Button, FlatList ,StyleSheet,TouchableOpacity, Text, View, Alert, TextInput, Image} from 'react-native';
 import moment from "moment";
-
+//<Button color={'#a09eff'} title='Submit' onPress={() => this.publishreview() }></Button> 
 export default class Review extends React.Component{
   
   constructor(props){
@@ -65,10 +65,14 @@ export default class Review extends React.Component{
   render(){
     return(
       <View style={styles.container}>
-        <Text style={styles.subtitleText}>Review</Text>
+        <Text style={styles.subtitleText}> Review </Text>
         <TextInput style={styles.TextInput} onChangeText={input => this.setState({review:input})} value={this.state.review} placeholder='Write your review here' textAlign={'center'} ></TextInput>
-        <Button color={'#a09eff'} title='Submit' onPress={() => this.publishreview() }></Button>        
-
+               
+        
+        <TouchableOpacity onPress={() => this.publishreview()} style={styles.button}>
+            <Text style={{color: 'white', fontSize: 17}} title="Submit" >Submit</Text>
+        </TouchableOpacity>
+        
         <FlatList
             keyExtractor={ item => item.created.seconds}
             data={this.state.pastreviews}
@@ -91,7 +95,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       alignItems: 'center',
-      backgroundColor: '#FFE9EE' 
+      backgroundColor: '#FEDBD0' 
     },
     details: {
       alignItems:'flex-start'
@@ -137,11 +141,8 @@ const styles = StyleSheet.create({
     },
     subtitleText: {
         marginTop: 10,
-        fontSize: 33, 
-        color: 'white',
-        textShadowColor: 'black',
-        textShadowOffset:  {width: -3, height: 3} ,
-        textShadowRadius: 20
+        fontSize: 40, 
+        color: 'darkslategrey'
     },
     TextInput:{
       marginVertical: 5,
@@ -152,17 +153,15 @@ const styles = StyleSheet.create({
       borderColor: 'darkgrey'
     },
     button: {
-      color: '#E9446A',
-      paddingTop:10,
-      marginHorizontal: 5,
-      marginVertical: 15,
+      backgroundColor: '#a09eff',
+      marginVertical: '4%',
       borderRadius: 4,
-      borderColor: '#CA2161',
+      borderColor: 'black',
       borderWidth: 1,
-      height: 52,
-      width: '20%',
+      height: 53,
+      width: 140,
       alignItems: 'center',
       justifyContent: 'center'
-    }   
+    }  
   });
   

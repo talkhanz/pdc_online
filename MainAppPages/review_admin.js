@@ -93,15 +93,11 @@ const styles = StyleSheet.create({
     },
 
     subtitleText: {
-        marginTop: 10,
-        fontSize: 33, 
-        color: 'white',
-        textShadowColor: 'black',
-        textShadowOffset:  {width: -3, height: 3} ,
-        textShadowRadius: 20,
-        borderBottomWidth: 1,
-        borderBottomColor: 'gray'
-
+      marginTop: 10,
+      fontSize: 33, 
+      color: 'black',
+      borderBottomWidth: 1,
+      borderBottomColor: 'gray'
     }
   });
   
