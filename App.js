@@ -27,7 +27,13 @@ import salesLogs from './MainAppPages/salesLogs';
 import review from './DrawerPages/Review';
 import voucherManager from './MainAppPages/adminManageVouchers';
 import suggestion from './DrawerPages/suggestion'
-import updateProfile from './DrawerPages/updateProfile'
+import chooseFeedback from './MainAppPages/choosefeedback';
+import reviewAdmin from './MainAppPages/review_admin';
+import suggestionAdmin from './MainAppPages/suggestion_admin';
+import deleteAccount from './DrawerPages/deleteAccount'
+import ForgotPassword from './MainAppPages/forgotPassword'
+import MyOrder from './DrawerPages/currentOrder'
+
 import { StackActions, 
   DefaultTheme as NavigationDefaultTheme,
  DarkTheme as NavigationDarkTheme, } from '@react-navigation/native';
@@ -60,49 +66,22 @@ colors: {
 };
 
   
-
-
 const stack = createStackNavigator();        // stack container for the app main screens 
 const drawer = createDrawerNavigator();      // drawer/side tab for screens in the side tab
 
 class CustomDrawerComponent extends React.Component{
- 
-  state = {
-    theme :  PaperDefaultTheme,
-     isSwitchOn: false
-    
-  
-}
-turnSwitchOn(){
-  this.setState({isSwitchOn:true})
-}
-
-changeToDarkTheme(){
-  this.turnSwitchOn()
-  this.setState({theme:PaperDarkTheme})  
-  globalTheme = PaperDarkTheme
-
-  
-
-}
     
   // custom drawer to include a sign out button
-  render(){  
-    
-                                  // as default drawer does not have buttons
+  render(){                               // as default drawer does not have buttons
     return (
       <DrawerContentScrollView {...this.props}>
        <Text style={{color:'black',fontSize: 20,marginBottom: 20,fontWeight:'bold',alignSelf:'center'}}>PDC Online</Text>
        <Avatar.Image
-            source={{
-              uri:
-                'https://pbs.twimg.com/profile_images/952545910990495744/b59hSXUd_400x400.jpg',
-            }}
+            source={require('./MainAppPages/images/pdc_online_icon.png')}
             size={50}
-            onPress={()=>{this.props.navigation.navigate('profile')}}
           />
           
-          <Title >Dawid Urbaniak</Title>
+          <Title >{auth().currentUser.displayName}</Title>
           <Caption >@trensik</Caption>
        
         <View>
@@ -123,13 +102,7 @@ changeToDarkTheme(){
             }}
           
           />
-            <PaperDrawer.Section  >
-            <View >
-            <Text style= {{color:'black',fontSize: 15,marginBottom:5,marginTop:'10%'}}>Dark Theme</Text>
-            <Switch style={{fontSize: 15,marginTop:'0%' }} value = {this.state.isSwitchOn} onValueChange={()=>{this.changeToDarkTheme()}}/>
-            </View>
-
-            </PaperDrawer.Section>
+           
      
           </View>
       </DrawerContentScrollView>
@@ -143,21 +116,25 @@ function getGestureEnable(route) {    // function to disable opening drawer/side
   switch (routeName) {    // switch case for the screens for whether to disable drawer or not
     case 'Login':   return false;
     case 'signup':  return false;
+    case 'ForgotPassword':  return false;
     case 'adminhome':  return false;
     case 'adminVerifyOrder':  return false;
     case 'salesLogs':  return false;
     case 'adminManageVouchers':  return false;
+    case 'choosefeedback':  return false;
+    case 'reviewAdmin':  return false;
+    case 'suggestionAdmin':  return false;
     default:        return true         // drawer is true for all other screens
   }
 }
 class AppStack extends React.Component {    // Stack of all screens for navigating in app
   render(){
     return(
-      <stack.Navigator initialRouteName="Sessions Menu" /* Intital screen is set to our login screen */ >  
+      <stack.Navigator initialRouteName="Login" /* Intital screen is set to our login screen */ >  
         <stack.Screen name="Login" component={login} navi={this.props.navigation} options={{ gestureEnabled: false, headerShown: false}}/>
+        <stack.Screen name="ForgotPassword" component={ForgotPassword} navi={this.props.navigation} options={{ gestureEnabled: false, headerShown: false}}/>
         <stack.Screen name="signup" component={signup} options={{ headerShown: false}}/>
         <stack.Screen name="profile" component={profile} navi={this.props.navigation} options={{ gestureEnabled: false, headerShown: false}}/>
-
         <stack.Screen name="Sessions Menu" component={sessionsMenu} options={{ headerShown: false}}/>
         <stack.Screen name="breakfast" component={breakfast} options={{ headerShown: false}}/>
         <stack.Screen name="lunch" component={lunch} options={{ headerShown: false}}/>
@@ -170,40 +147,26 @@ class AppStack extends React.Component {    // Stack of all screens for navigati
         <stack.Screen name="adminVerifyOrder" component={verifyOrder} options={{ headerShown: false}}/>
         <stack.Screen name="salesLogs" component={salesLogs} options={{ headerShown: false}}/>
         <stack.Screen name="adminManageVouchers" component={voucherManager} options={{ headerShown: false}}/>
+        <stack.Screen name="choosefeedback" component={chooseFeedback} options={{ headerShown: false}}/>
+        <stack.Screen name="reviewAdmin" component={reviewAdmin} options={{ headerShown: false}}/>
+        <stack.Screen name="suggestionAdmin" component={suggestionAdmin} options={{ headerShown: false}}/>
       </stack.Navigator>
     )
   }
 }
 export default class App extends React.Component {  // this is the first component that runs in the app. Contains the drawer which contains the main app stack
-  
-  state = {
-    theme :  PaperDefaultTheme,
-     isSwitchOn: false,
     
-  
-}
-turnSwitchOn(){
-  this.setState({isSwitchOn:true})
-}
-
-changeToDarkTheme(){
-  this.turnSwitchOn()
-  this.setState({theme:PaperDarkTheme})
-
-}
- 
-  
-  
   render(){
   return (
-    <PaperProvider theme={this.state.theme}>
-   <NavigationContainer theme={this.state.theme} >
-     <drawer.Navigator theme ={this.state.theme} initialRouteName='Main Menu' drawerContent={(props) => <CustomDrawerComponent {...props} />} drawerStyle={{backgroundColor: '#FFDAE3',width: 240}}>
+    <PaperProvider theme={globalTheme}>
+   <NavigationContainer theme={globalTheme} >
+     <drawer.Navigator theme ={globalTheme} initialRouteName='Main Menu' drawerContent={(props) => <CustomDrawerComponent {...props} />} drawerStyle={{backgroundColor: '#FFDAE3',width: 240}}>
         <drawer.Screen name='Main Menu' component={AppStack} options={({ route }) => ({drawerIcon:()=>{return <Icon color='#E9446A' name='ios-beer' size={40} />},gestureEnabled: getGestureEnable(route) })}/>
         <drawer.Screen name='Wallet' component={wallet} options={{drawerIcon:()=>{return <Icon color='#E9446A' name='ios-wallet' size={40} />}}}/>
+        <drawer.Screen name='My Order' component={MyOrder} options={({ route }) => ({drawerIcon:()=>{return <Icon color='#E9446A' name='ios-beer' size={40} />},gestureEnabled: getGestureEnable(route) })}/>
         <drawer.Screen name='Post a Review' component={review} options={{drawerIcon:()=>{return <Icon color='#E9446A' name='ios-book' size={40} />}}}/>
         <drawer.Screen name='Got any Suggestions?' component={suggestion} options={{drawerIcon:()=>{return <Icon2 color='#E9446A' name='comment' size={27} />}}}/> 
-        <drawer.Screen name="Settings" component={updateProfile} options={{ drawerIcon:()=>{return <Icon color='#E9446A' name='ios-cog' size={40} />}}}/>
+        <drawer.Screen name="Delete Account" component={deleteAccount} options={{ drawerIcon:()=>{return <Icon color='#E9446A' name='ios-cog' size={40} />}}}/>
      </drawer.Navigator>  
    </NavigationContainer>
    </PaperProvider>

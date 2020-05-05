@@ -4,33 +4,32 @@ import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import {ImageBackground, ActivityIndicator, Button, FlatList ,StyleSheet,TouchableOpacity, Text, View, Alert, TextInput, Image} from 'react-native';
 import moment from "moment";
-
 export default class Review extends React.Component{
   
-  constructor(props){
+  constructor(props){     
     super(props)
     this.state = ({
-      pastreviews: [],
-      email: auth().currentUser.email,
+      pastreviews: [],                         //This stores all the reviews made by everyone
+      email: auth().currentUser.email,        //User name and email is extracted from the database
       name: auth().currentUser.displayName,
-      review: ''
+      review: ''                              //This variable stores the review that the user themself writes
     })
   }
- 
+
   async publishreview(){ 
-      const reviewCollection = firestore().collection('Reviews')
+      const reviewCollection = firestore().collection('Reviews') //This collects all documents that contains reviews
       const REVIEWS = []
       
       reviewCollection.add({   
-          name : this.state.name,
+          name : this.state.name,       
           email : this.state.email,
           review: this.state.review,
-          created: firebase.firestore.Timestamp.fromDate(new Date()),
-          time: moment()
+          created: firebase.firestore.Timestamp.fromDate(new Date()), //This time variable is stored so we can sort our reviews by time when fetching them
+          time: moment()        //This variable is used to display the time at which the review was made
           .utcOffset('+05:00')
           .format('DD-MM-YYYY hh:mm:ss a')
       }).then(()=> {
-          reviewCollection.get().then(snapshot => {
+          reviewCollection.get().then(snapshot => {     //This updates the reviews being shown after a user posts a review
            
             snapshot.forEach(doc => {
 
@@ -63,28 +62,30 @@ export default class Review extends React.Component{
     }
     
   render(){
- 
     return(
-        <View style={styles.container}>
-            <Text style={styles.subtitleText}>Review</Text>
-            <TextInput style={styles.TextInput} onChangeText={input => this.setState({review:input})} value={this.state.review} placeholder='Write your review here' textAlign={'center'} ></TextInput>
-            <Button styles={styles.button} title='Submit' onPress={() => this.publishreview() }></Button>        
-    
-            <FlatList
-                keyExtractor={ item => item.created.seconds}
-                data={this.state.pastreviews}
-                renderItem={({item})=>{
-                    return(
-                      <View style={styles.details}>
-                        <Text style={styles.reviewername}>{item.name}</Text>
-                        <Text style={styles.review}>{item.review}</Text>
-                        <Text style={styles.Time}>Made on: {item.time}</Text>
-                      </View>
-                    )}
-              }
-            />
-        </View>
-      
+      <View style={styles.container}>
+        <Text style={styles.subtitleText}> Review </Text>
+        <TextInput style={styles.TextInput} onChangeText={input => this.setState({review:input})} value={this.state.review} placeholder='Write your review here' textAlign={'center'} ></TextInput>
+               
+        
+        <TouchableOpacity onPress={() => this.publishreview()} style={styles.button}>
+            <Text style={{color: 'white', fontSize: 17}} title="Submit" >Submit</Text>
+        </TouchableOpacity>
+        
+        <FlatList
+            keyExtractor={ item => item.created.seconds}
+            data={this.state.pastreviews}
+            renderItem={({item})=>{
+                return(
+                  <View style={styles.details}>
+                    <Text style={styles.reviewername}>{item.name}</Text>
+                    <Text style={styles.review}>{item.review}</Text>
+                    <Text style={styles.Time}>Made on: {item.time}</Text>
+                  </View>
+                )}
+          }
+        />
+      </View>
     )
   }
 }
@@ -92,9 +93,8 @@ export default class Review extends React.Component{
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: 'gainsboro',
-      alignItems: 'center'
-      
+      alignItems: 'center',
+      backgroundColor: '#FEDBD0' 
     },
     details: {
       alignItems:'flex-start'
@@ -102,14 +102,32 @@ const styles = StyleSheet.create({
     reviewername: {
       fontSize: 20,
       fontWeight: "bold",
-      color: 'black'
+      color: 'black',
+      paddingLeft: 10,
+      paddingBottom: 2
     },
     review: {
-      fontSize: 15,
-      backgroundColor: 'pink'
+      fontSize: 16,
+      marginHorizontal: 10,
+      marginVertical: 3,
+      letterSpacing:  0.3,
+      paddingHorizontal: 8,
+      paddingVertical:3,
+      textAlign: 'justify',
+      backgroundColor: '#fdff9e',
+      justifyContent:'flex-end',
+      borderWidth: 1,
+      borderTopLeftRadius: 10,
+      borderTopRightRadius: 10,
+      borderBottomRightRadius: 10,
+      borderBottomLeftRadius: 10,
     },
     Time:{
-      alignContent: 'flex-end'
+      color: 'black',
+      letterSpacing: 0.5,
+      fontWeight: 'bold',
+      marginRight: '4%',
+      alignSelf: 'flex-end'
     },
     box: {
       justifyContent:'flex-end',
@@ -122,33 +140,28 @@ const styles = StyleSheet.create({
       width: 400
     },
     subtitleText: {
-        marginVertical: 7,
-        fontSize: 33, 
-        color: 'white',
-        textShadowColor: 'black',
-        textShadowOffset:  {width: -3, height: 3} ,
-        textShadowRadius: 10
+        marginTop: 10,
+        fontSize: 40, 
+        color: 'darkslategrey'
     },
     TextInput:{
       marginVertical: 5,
       height: 40, 
       width: '60%',
-      backgroundColor: 'white',
       borderColor: 'black', 
-      borderWidth: 1 ,
-    }, 
+      borderBottomWidth: 1,
+      borderColor: 'darkgrey'
+    },
     button: {
-      backgroundColor: '#E9446A',
-      marginHorizontal: 5,
-      marginVertical: 15,
+      backgroundColor: '#a09eff',
+      marginVertical: '4%',
       borderRadius: 4,
-      borderColor: '#CA2161',
+      borderColor: 'black',
       borderWidth: 1,
-      height: 52,
-      width: '20%',
+      height: 53,
+      width: 140,
       alignItems: 'center',
-      justifyContent: 'center',
-      paddingBottom: 100
-    }   
+      justifyContent: 'center'
+    }  
   });
   

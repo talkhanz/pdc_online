@@ -26,78 +26,69 @@ import {DarkTheme as PaperDarkTheme,
  class SessionMenu extends React.Component {
   render(){
     return (
-   <ScrollView>
+      <View>
+      <Appbar style={styles.Appbar} >
+     
+      <Icon style={{marginLeft: '3%'}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} /* on clicking this icon we get a side tab/drawer */ />
+      <Title  style = {styles.titleText} >Menu</Title>
+      </Appbar>
+   <ScrollView >
 
    
      
-     <Appbar theme = {globalTheme} >
-     
-     <Icon style={{marginLeft: '3%'}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} /* on clicking this icon we get a side tab/drawer */ />
-     <Title  style = {styles.titleText} >Menu</Title>
-     </Appbar>
-   <Card  onPress={()=>{ this.props.navigation.navigate('sehri')}}>
+    
+   <Card style={styles.screen} onPress={()=>{ this.props.navigation.navigate('sehri')}}>
  
     <Card.Content>
       <Title>Sehri</Title>
       
     </Card.Content>
-    <Card.Cover source={require('./sehri.jpeg')}  />
-    <Card.Actions>
-      
-    </Card.Actions>
-  </Card>
-  <Card  onPress={()=>{ this.props.navigation.navigate('iftari')}}>
+    <Card.Cover style={styles.box} source={require('./VIEWSEHRI.jpg')}  />
+
+    </Card>
+  <Card style={styles.screen} onPress={()=>{ this.props.navigation.navigate('iftari')}}>
  
  <Card.Content>
    <Title>Iftari</Title>
    
  </Card.Content>
- <Card.Cover source={require('./iftari.jpeg')}  />
+ <Card.Cover  style={styles.box} source={require('./VIEWIFTA.jpg')}  />
  <Card.Actions>
    
  </Card.Actions>
 </Card>
 
- <Card
+ <Card style={styles.screen} 
  onPress={()=>{ this.props.navigation.navigate('breakfast')}}>
   
     <Card.Content>
       <Title>Breakfast</Title>
-      
-   
     </Card.Content>
     
-    <Card.Cover  source={require('./breakfast.jpeg')} />
-  
+    <Card.Cover style={styles.box}  source={require('./breakfast.jpeg')} />
 
-       <Card.Actions>
-    
-    </Card.Actions>
   </Card>
-  <Card onPress={()=>{ this.props.navigation.navigate('lunch')}}>
+  <Card style={styles.screen} onPress={()=>{ this.props.navigation.navigate('lunch')}}>
    
     <Card.Content>
       <Title>Lunch</Title>
      
     </Card.Content>
-    <Card.Cover source={require('./lunch.jpeg')} />
-    <Card.Actions>
-      
-    </Card.Actions>
+    <Card.Cover  style={styles.box} source={require('./lunch.jpeg')} />
+    
   </Card>
 
-  <Card  onPress={()=>{ this.props.navigation.navigate('dinner')}}>
+  <Card style={styles.screen}  onPress={()=>{ this.props.navigation.navigate('dinner')}}>
  
     <Card.Content>
       <Title>Dinner</Title>
       
     </Card.Content>
-    <Card.Cover source={require('./dinner.jpg')}  />
-    <Card.Actions>
-      
-    </Card.Actions>
+    <Card.Cover style={styles.box} source={require('./dinner.jpg')}  />
+
   </Card>
 </ScrollView>
+</View>
 
    
        
@@ -105,20 +96,28 @@ import {DarkTheme as PaperDarkTheme,
   }
 }
 
-const styles = StyleSheet.create({   //This sheet is associated only with this screen i.e the sessionsMenu screen
+const styles = StyleSheet.create({  //This sheet is associated only with this screen i.e the sessionsMenu screen
+
+  screen:{
+    backgroundColor:'#FEDBD0',
+  } ,  
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start'
   },
   box: {
-    alignItems: 'center',
-    borderWidth: 5,
+    borderWidth: 2,
+    marginHorizontal: 5,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     borderBottomRightRadius: 20,
     borderBottomLeftRadius: 20,
-    height: 267,
+    height: 255,
+  },
+  Appbar: {
+    backgroundColor:'#E9446A',
+    height: 45,
   },
   cart:{
     alignItems: 'center',
@@ -139,10 +138,10 @@ const styles = StyleSheet.create({   //This sheet is associated only with this s
     borderBottomLeftRadius: 20,
   },
   titleText: {
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: "bold",
     paddingTop: '2%',
-    paddingLeft: '30%',
+    paddingLeft:'30%',
     color: 'black'
   },
   Img: {

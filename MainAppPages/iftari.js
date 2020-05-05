@@ -18,6 +18,7 @@ import {
   Colors,
   Appbar,
   Title,
+  Card,
   Caption,
   Paragraph,
   Drawer,
@@ -97,9 +98,8 @@ export default class iftari extends React.Component {
     render(){    
       if(this.state.menuAvailable == 'Menu not available'){ //checks if menu available
           return(
-            //scroll tags allow us to scroll
-            <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={styles.scroll} >
-            <Appbar style={styles.row}>
+            <View>
+               <Appbar style={styles.Appbar}>
                 <Icon style={{marginLeft: '3%'}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} />
                   <Title style={styles.titleText}>Menu</Title>
                     <View style={{flexDirection:'row'}}>
@@ -107,14 +107,19 @@ export default class iftari extends React.Component {
                         <Icon onPress={() => this.props.navigation.navigate('cart',{cartItems: this.state.cartList})} name='md-cart' size={40} /* allows us to  pass cartList data to cart screen on Icon Press*//>  
                     </View>
             </Appbar>
+            
+            //scroll tags allow us to scroll
+            <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={styles.scroll} >
+           
             <Text style={{marginVertical: 10,fontSize: 20,paddingVertical: 200,paddingLeft: '25%'}} >Menu not available</Text>
 
             </ScrollView>
+            </View>
           )
       }
       return ( //otherwise will display menu 
-        <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={{color:'#FFDAE3'}} >
-        <Appbar style={styles.row}>
+        <View>
+          <Appbar style={styles.Appbar}>
             <Icon style={{marginLeft: '3%'}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} />
               <Title style={styles.titleText}>Menu</Title>
                 <View style={{flexDirection:'row'}}>
@@ -122,6 +127,8 @@ export default class iftari extends React.Component {
                     <Icon onPress={() => this.props.navigation.navigate('cart',{cartItems: this.state.cartList})} name='md-cart' size={40} /* allows us to  pass cartList data to cart screen on Icon Press*//>  
                 </View>
         </Appbar>
+        <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={{color:'#FFDAE3'}} >
+      
 
 
           <FlatList
@@ -130,12 +137,13 @@ export default class iftari extends React.Component {
           keyExtractor={ item => item.key}
           data={this.state.itemList} // we get our menu from itemList and storing it in data prop 
            renderItem={({item}) => ( // each item is being rendered to screen using renderItem prop
-<Card>
+<Card style={styles.screen}>
   <Card.Title title={item.item}/>
   <Card.Content>
    
   </Card.Content>
-  <Card.Cover   source={require('./breakfast.jpeg')} />
+  <Card.Cover   style={styles.box}  source={{
+                        uri: item.img}} />
       <View  style={{flex: 1,justifyContent: 'center',flexDirection: 'row'}} /*flexDirection row renders components horizontally */> 
                           <Text style={styles.subtitleText}>{'Standard  Rs '}{item.standard}{'   '}</Text> 
                           <Icon  onPress={() => { /* + icon for adding item */
@@ -169,7 +177,8 @@ export default class iftari extends React.Component {
 </Card> )} />
 
        
-     </ScrollView>        
+     </ScrollView>   
+     </View>     
        
      );
     }
@@ -181,9 +190,18 @@ export default class iftari extends React.Component {
         color: 'black',
         paddingLeft: '5%',
       },
+      screen:{
+        backgroundColor:'#FEDBD0',
+      } , 
       subtitleText: {
         marginVertical: 10,
         fontSize: 20, 
+      },
+      Appbar: {
+        backgroundColor:'#E9446A',
+
+        justifyContent: 'space-between',
+        height: 45,
       },
       titleback: {
         alignItems: 'center',
@@ -191,6 +209,15 @@ export default class iftari extends React.Component {
         borderTopRightRadius: 20,
         borderBottomRightRadius: 20,
         borderBottomLeftRadius: 20,
+      },
+      box: {
+        borderWidth: 2,
+        marginHorizontal: 5,    
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        borderBottomRightRadius: 20,
+        borderBottomLeftRadius: 20,
+        height: 250,
       },
       row: {
         flex: 1,

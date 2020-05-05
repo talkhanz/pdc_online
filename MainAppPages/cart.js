@@ -180,6 +180,10 @@ export default class cart extends React.Component {
         paddingLeft: '25%',
 
       },
+      screen:{
+        backgroundColor:'#FEDBD0',
+      } , 
+      
       button: {
         backgroundColor: '#E9446A',
         marginHorizontal: 5,

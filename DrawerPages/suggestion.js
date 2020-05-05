@@ -28,7 +28,7 @@ export default class Suggestion extends React.Component{
           .utcOffset('+05:00')
           .format('DD-MM-YYYY hh:mm:ss a')
       }).then(()=> {
-           
+            Alert.alert("Your suggestion has been submitted. Thank you!")
         })
       .catch((err)=> {
           console.log(err)
@@ -38,50 +38,59 @@ export default class Suggestion extends React.Component{
  
     return(
         <View style={styles.container}>
-            <Text style={styles.subtitleText}>Suggestions</Text>
-            <TextInput style={styles.TextInput} onChangeText={input => this.setState({suggestion:input})} value={this.state.suggestion} placeholder='Write your suggestion here' textAlign={'center'} ></TextInput>
-            <Button styles={styles.button} title='Submit' onPress={() => this.publishSuggestion() }></Button>        
+           <Text style={styles.subtitleText}> Help Us Improve! </Text>
+            <Image style={styles.Img} source={require('../MainAppPages/images/suggestion-box.jpg')}
+              />
+            <TextInput style={styles.TextInput} onChangeText={input => this.setState({suggestion:input})} value={this.state.suggestion} placeholderTextColor={'dimgrey'}  placeholder='Write your suggestion here' textAlign={'center'} ></TextInput>
+            <TouchableOpacity onPress={() => this.publishSuggestion()} style={styles.button}>
+                <Text style={{color: 'white', fontSize: 17}} title="Submit" >Submit</Text>
+            </TouchableOpacity>        
         </View>
-      
     )
   }
 }
-
+//<Button color={'#9e79d9'} title='Submit' onPress={() => this.publishSuggestion() }></Button>
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: 'gainsboro',
-      alignItems: 'center'
-      
+      backgroundColor: '#e2ffdb',
+      alignItems: 'center',
+      justifyContent: 'center'
     },
     subtitleText: {
-        marginVertical: 7,
-        fontSize: 33, 
-        color: 'white',
-        textShadowColor: 'black',
-        textShadowOffset:  {width: -3, height: 3} ,
-        textShadowRadius: 10
+      marginTop: '0%',
+      marginBottom: '4%',
+      fontSize: 33, 
+      color: 'black'
     },
     TextInput:{
-      marginVertical: 5,
+      marginTop: '1%',
+      marginBottom: '1%',
       height: 40, 
       width: '60%',
-      backgroundColor: 'white',
-      borderColor: 'black', 
-      borderWidth: 1 ,
-    }, 
+      borderBottomWidth: 1,
+      marginBottom: '4%',
+      borderColor: 'darkgrey'
+    },
+    Img: {
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      borderBottomRightRadius: 20,
+      borderBottomLeftRadius: 20,
+      marginBottom: '2%',
+      height: 220,
+      width: 376
+    },
     button: {
-      backgroundColor: '#E9446A',
-      marginHorizontal: 5,
-      marginVertical: 15,
+      backgroundColor: '#a981e6',
+      marginVertical: '4%',
       borderRadius: 4,
-      borderColor: '#CA2161',
+      borderColor: 'black',
       borderWidth: 1,
-      height: 52,
-      width: '20%',
+      height: 53,
+      width: 140,
       alignItems: 'center',
-      justifyContent: 'center',
-      paddingBottom: 100
-    }   
+      justifyContent: 'center'
+    }
   });
   

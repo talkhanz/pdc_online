@@ -131,12 +131,12 @@ export default class iftari extends React.Component {
           keyExtractor={ item => item.key}
           data={this.state.itemList} // we get our menu from itemList and storing it in data prop 
            renderItem={({item}) => ( // each item is being rendered to screen using renderItem prop
-<Card>
+<Card style={styles.screen}>
   <Card.Title title={item.item}/>
   <Card.Content>
    
   </Card.Content>
-  <Card.Cover   source={require('./breakfast.jpeg')} />
+  <Card.Cover   style={styles.box}  source={require('./breakfast.jpeg')} />
       <View  style={{flex: 1,justifyContent: 'center',flexDirection: 'row'}} /*flexDirection row renders components horizontally */> 
                           <Text style={styles.subtitleText}>{'Standard  Rs '}{item.standard}{'   '}</Text> 
                           <Icon  onPress={() => { /* + icon for adding item */
@@ -190,6 +190,20 @@ export default class iftari extends React.Component {
       subtitleText: {
         marginVertical: 10,
         fontSize: 20, 
+      },
+      screen:{
+        backgroundColor:'#FEDBD0',
+      } , 
+      box: {
+        borderWidth: 5,
+        marginHorizontal: 5,
+
+    
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        borderBottomRightRadius: 20,
+        borderBottomLeftRadius: 20,
+        height: 250,
       },
       titleback: {
         alignItems: 'center',
