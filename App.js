@@ -26,7 +26,10 @@ import salesLogs from './MainAppPages/salesLogs';
 import review from './DrawerPages/Review';
 import voucherManager from './MainAppPages/adminManageVouchers';
 import suggestion from './DrawerPages/suggestion'
-import updateProfile from './DrawerPages/updateProfile'
+import deleteAccount from './DrawerPages/deleteAccount'
+import review_Admin from './MainAppPages/review_admin'
+import ForgotPassword from './MainAppPages/forgotPassword'
+import MyOrder from './DrawerPages/currentOrder'
 
 const stack = createStackNavigator();        // stack container for the app main screens 
 const drawer = createDrawerNavigator();      // drawer/side tab for screens in the side tab
@@ -75,6 +78,7 @@ class AppStack extends React.Component {    // Stack of all screens for navigati
     return(
       <stack.Navigator initialRouteName="Login" /* Intital screen is set to our login screen */ >  
         <stack.Screen name="Login" component={login} navi={this.props.navigation} options={{ gestureEnabled: false, headerShown: false}}/>
+        <stack.Screen name="ForgotPassword" component={ForgotPassword} navi={this.props.navigation} options={{ gestureEnabled: false, headerShown: false}}/>
         <stack.Screen name="signup" component={signup} options={{ headerShown: false}}/>
         <stack.Screen name="Sessions Menu" component={sessionsMenu} options={{ headerShown: false}}/>
         <stack.Screen name="breakfast" component={breakfast} options={{ headerShown: false}}/>
@@ -98,10 +102,11 @@ export default class App extends React.Component {  // this is the first compone
    <NavigationContainer>
      <drawer.Navigator initialRouteName='Main App' drawerContent={(props) => <CustomDrawerComponent {...props} />} drawerStyle={{backgroundColor: '#FFDAE3',width: 240}}>
         <drawer.Screen name='Main App' component={AppStack} options={({ route }) => ({drawerIcon:()=>{return <Icon color='#E9446A' name='ios-beer' size={40} />},gestureEnabled: getGestureEnable(route) })}/>
+        <drawer.Screen name='My Order' component={MyOrder} options={({ route }) => ({drawerIcon:()=>{return <Icon color='#E9446A' name='ios-beer' size={40} />},gestureEnabled: getGestureEnable(route) })}/>
         <drawer.Screen name='Wallet' component={wallet} options={{drawerIcon:()=>{return <Icon color='#E9446A' name='ios-wallet' size={40} />}}}/>
         <drawer.Screen name='Post a Review' component={review} options={{drawerIcon:()=>{return <Icon color='#E9446A' name='ios-book' size={40} />}}}/>
         <drawer.Screen name='Got any Suggestions?' component={suggestion} options={{drawerIcon:()=>{return <Icon2 color='#E9446A' name='comment' size={27} />}}}/> 
-        <drawer.Screen name="Update Profile" component={updateProfile} options={{ drawerIcon:()=>{return <Icon color='#E9446A' name='ios-cog' size={40} />}}}/>
+        <drawer.Screen name="Delete Account" component={deleteAccount} options={{ drawerIcon:()=>{return <Icon color='#E9446A' name='ios-cog' size={40} />}}}/>
      </drawer.Navigator>  
    </NavigationContainer>
   );
