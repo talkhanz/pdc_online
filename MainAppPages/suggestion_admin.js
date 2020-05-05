@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#e2ffdb' 
     },  
     details: {
-      alignItems: 'flex-start',
+      alignItems: 'flex-start'
     },
     reviewername: {
       fontSize: 20,
@@ -74,11 +74,10 @@ const styles = StyleSheet.create({
       marginHorizontal: '2.5%',
       marginBottom: '1%',
       letterSpacing:  0.3,
-      paddingHorizontal: 8,
-      paddingVertical:3,
+      paddingHorizontal: '2%',
+      paddingVertical: '1%',
       textAlign: 'justify',
       backgroundColor: '#fdff9e',
-      justifyContent:'flex-end',
       borderWidth: 1,
       borderTopLeftRadius: 10,
       borderTopRightRadius: 10,
@@ -89,7 +88,8 @@ const styles = StyleSheet.create({
       color: 'black',
       letterSpacing: 0.5,
       fontWeight: 'bold',
-      paddingLeft: '41%'
+      marginRight: '4%',
+      alignSelf: 'flex-end'
     },
     subtitleText: {
       marginTop: 10,

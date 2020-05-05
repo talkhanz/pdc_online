@@ -30,7 +30,6 @@ import updateProfile from './DrawerPages/updateProfile';
 import chooseFeedback from './MainAppPages/choosefeedback';
 import reviewAdmin from './MainAppPages/review_admin';
 import suggestionAdmin from './MainAppPages/suggestion_admin';
-import suggestion_admin from './MainAppPages/suggestion_admin';
 
 
 const stack = createStackNavigator();        // stack container for the app main screens 
@@ -95,7 +94,7 @@ class AppStack extends React.Component {    // Stack of all screens for navigati
         <stack.Screen name="adminManageVouchers" component={voucherManager} options={{ headerShown: false}}/>
         <stack.Screen name="choosefeedback" component={chooseFeedback} options={{ headerShown: false}}/>
         <stack.Screen name="reviewAdmin" component={reviewAdmin} options={{ headerShown: false}}/>
-        <stack.Screen name="suggestionAdmin" component={suggestion_admin} options={{ headerShown: false}}/>
+        <stack.Screen name="suggestionAdmin" component={suggestionAdmin} options={{ headerShown: false}}/>
               
       </stack.Navigator>
     )

@@ -127,7 +127,8 @@ const styles = StyleSheet.create({
       color: 'black',
       letterSpacing: 0.5,
       fontWeight: 'bold',
-      paddingLeft: '41%'
+      marginRight: '4%',
+      alignSelf: 'flex-end'
     },
     box: {
       justifyContent:'flex-end',

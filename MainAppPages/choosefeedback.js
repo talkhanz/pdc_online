@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
   },
   box: {
     alignItems: 'center',
+    marginLeft: '2.5%',
     borderWidth: 5,
     marginTop: '12%',
     borderTopLeftRadius: 30,
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 20,
     borderBottomLeftRadius: 20,
     height: 300,
-    justifyContent: 'space-around' 
+    width: '95%'
   },
   titleback: {
     backgroundColor:'navajowhite',
@@ -65,13 +66,10 @@ const styles = StyleSheet.create({
     color: 'black'
   },
   Img: {
-    marginTop: '7%',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
-    borderBottomLeftRadius: 20,
-    height: 220,
-    width: 380
+    height: '88%',
+    width: '100%'
   },
   sessioname: {
     fontSize: 25,

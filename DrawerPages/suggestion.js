@@ -49,7 +49,6 @@ export default class Suggestion extends React.Component{
     )
   }
 }
-//<Button color={'#9e79d9'} title='Submit' onPress={() => this.publishSuggestion() }></Button>
 const styles = StyleSheet.create({
     container: {
       flex: 1,
