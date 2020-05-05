@@ -57,6 +57,7 @@ export default class sehri extends React.Component {
             this.setState({menuAvailable: received[0]})}
         else{
           this.setState({itemList: received})
+          received.forEach( x => console.log(typeof x.img,x.img))
         }
       })
       .catch(err => console.log(err))
@@ -98,8 +99,10 @@ export default class sehri extends React.Component {
               <View style={{alignItems:'center'}}>
                   <Text style={{marginVertical: 10,fontSize: 30,}}>{item.item}</Text> 
                   <FastImage
-                      style={{ width: 200, height: 200 }}
-                      source={require('./images/DaalMoongMasoor.gif')}
+                      style={{ width:300, height: 300 }}
+                      source={{
+                        uri: item.img,
+                    }}
                       resizeMode={FastImage.resizeMode.contain}
                   />
                     <View  style={{flex: 1,justifyContent: 'center',flexDirection: 'row'}} /*flexDirection row renders components horizontally */> 

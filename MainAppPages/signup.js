@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import { StackActions } from '@react-navigation/native';
 import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
@@ -12,17 +13,17 @@ export default class Login extends React.Component{
         email: '',
         password: '',
         name: '',
-        uid: ''
     }
 
     signup(){
         auth().createUserWithEmailAndPassword(this.state.email,this.state.password)
-        .then((resp) => {
+        .then(async (resp) => {
+            resp.user.updateProfile({displayName: this.state.name})
             auth().currentUser.sendEmailVerification().catch(err => console.log(err))
             Alert.alert('Please verify your email. It may be in your junk folder')
-            resp.user.updateProfile({displayName: this.state.name})
-            this.setState({uid: resp.user.uid})
-            firestore().collection('Users').doc(resp.user.uid).set({
+            const uid = resp.user.uid
+            auth().signOut().catch(err => console.log(err));            // signs out user
+            firestore().collection('Users').doc(uid).set({
                 name : this.state.name,
                 password : this.state.password,
                 email : this.state.email,
@@ -30,7 +31,8 @@ export default class Login extends React.Component{
                 admin : false,
                 pastOrders : 'False',
                 currentOrder : {}
-            })
+            }).catch(err=> console.log(err))
+            this.props.navigation.dispatch(StackActions.popToTop());    // clears all screens from stack except 1st login screen so user is navigated to login screen
         })
         .catch(error => {
           if (error.code === 'auth/email-already-in-use') {
@@ -53,9 +55,9 @@ export default class Login extends React.Component{
               <Text style={styles.subtitleText}> Name</Text>
               <TextInput style={styles.TextInput} onChangeText={name => this.setState({name: name})} value={this.state.name} placeholder='Enter your full name' textAlign={'center'} ></TextInput>
               <Text style={styles.subtitleText}> Email</Text>
-              <TextInput style={styles.TextInput} onChangeText={email => this.setState({email: email})} value={this.state.email} placeholder='rollnumber@lums.edu.pk' textAlign={'center'}  ></TextInput>
+              <TextInput style={styles.TextInput} onChangeText={email => this.setState({email: email})} value={this.state.email} placeholder='Email' textAlign={'center'}  ></TextInput>
               <Text style={styles.subtitleText}> Password</Text>
-              <TextInput style={styles.TextInput} onChangeText={pass => this.setState({password: pass})} value={this.state.password} placeholder='password' secureTextEntry textAlign={'center'} ></TextInput>
+              <TextInput style={styles.TextInput} onChangeText={pass => this.setState({password: pass})} value={this.state.password} placeholder='Password' secureTextEntry textAlign={'center'} ></TextInput>
               <TouchableOpacity onPress={() => this.signup()} style={styles.button}>
                 <Text style={{color: 'white', fontSize: 17}}>Sign up</Text>
             </TouchableOpacity>
@@ -84,7 +86,7 @@ subtitleText: {
     fontSize: 22, 
     color: 'white',
     textShadowColor: 'black',
-    textShadowOffset:  {width: -3, height: 3} ,
+    textShadowOffset:  {width: -3} ,
     textShadowRadius: 10
 },
 usernameText:{},

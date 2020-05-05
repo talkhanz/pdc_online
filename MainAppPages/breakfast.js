@@ -100,8 +100,10 @@ export default class iftari extends React.Component {
               <View style={{alignItems:'center'}}>
                   <Text style={{marginVertical: 10,fontSize: 30,}}>{item.item}</Text> 
                   <FastImage
-                      style={{ width: 200, height: 200 }}
-                      source={item.gif}
+                      style={{ width:300, height: 300 }}
+                      source={{
+                        uri: item.img,
+                    }}
                       resizeMode={FastImage.resizeMode.contain}
                   />
                     <View  style={{flex: 1,justifyContent: 'center',flexDirection: 'row'}} /*flexDirection row renders components horizontally */> 

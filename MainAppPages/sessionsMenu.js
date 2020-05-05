@@ -104,7 +104,7 @@ const styles = StyleSheet.create({   //This stylesheet is associated only with t
     borderTopRightRadius: 30,
     borderBottomRightRadius: 20,
     borderBottomLeftRadius: 20,
-    height: 267,
+    height: 267
   },
   cart:{
     alignItems: 'center',
@@ -127,7 +127,8 @@ const styles = StyleSheet.create({   //This stylesheet is associated only with t
   titleText: {
     fontSize: 30,
     fontWeight: "bold",
-    paddingTop: '2%',
+    paddingTop: '1%',
+    paddingBottom: '1%',
     color: 'black'
   },
   Img: {

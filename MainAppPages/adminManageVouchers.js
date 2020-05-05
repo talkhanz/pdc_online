@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text,FlatList,StyleSheet,TouchableOpacity,View, Button} from 'react-native';
+import {Text,FlatList,Alert,StyleSheet,TouchableOpacity,View, Button} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
@@ -7,22 +7,68 @@ const voucher = require('voucher-code-generator')
 
 export default class voucherManager extends React.Component{
     state = {
-        codesList: []
+        codesList: [],
+        codeDisplay: ''
     }
 
     codeGenerator(){
-        const codes = voucher.generate({
-            length: 12,
-            count:10
+        Alert.alert("Reset codes in Database?" , 'This will clear and replace the codes present in databse with new ones',
+        [
+          {
+            text: "Cancel",
+            style: "cancel"
+          },
+          { text: "OK", onPress: async () => {
+                const codes = voucher.generate({
+                    length: 12,
+                    count:10
+                })
+                var codeList = {}
+                for(var i=0; i< codes.length; i++){
+                    codeList[i] = ({
+                        code: codes[i],
+                        used: false
+                    })
+                }
+                this.setState({codesList: codes})
+                firestore().collection('Voucher Codes').doc('Codes List').set(codeList)
+                .catch(err => console.log(err))
+          }}
+        ]
+      );
+    }
+
+    getCode(){
+        firestore().collection('Voucher Codes').doc('Codes List').get().then(doc => {
+            const totalCodes = Object.keys(doc.data()).length
+            var codeNumber = 0
+            var randomCode = null
+            do {
+                randomCode = Math.round(Math.random() * totalCodes) - 1
+                codeNumber++
+            } while (doc.data()[randomCode].used == true && codeNumber <= totalCodes);
+
+            if(codeNumber > totalCodes){
+                this.setState({codeDisplay: 'No new codes available. Generate new codes'})
+            }
+            else{
+                this.setState({codeDisplay: doc.data()[randomCode].code})
+            }
         })
-        this.setState({codesList: codes})
+        .catch(err => console.log(err))
     }
 
     render(){
         return(
             <View style={{flex: 1,alignItems:'center', backgroundColor:'#D3D3D3'}}>
                 <Text style={styles.titleText}>Manage Voucher Codes</Text>
-                <Button title='Generate Codes' onPress={() => this.codeGenerator()}></Button>
+                <TouchableOpacity onPress={() => this.getCode()} style={styles.button}>
+                        <Text style={{color: 'white', fontSize: 17}} title="Login" >Get Random Code</Text>
+                    </TouchableOpacity>
+                <Text style={{fontSize: 20,textAlign:'center',marginHorizontal:30,marginVertical:15}}>{this.state.codeDisplay}</Text>
+                <TouchableOpacity onPress={() => this.codeGenerator()} style={styles.button}>
+                    <Text style={{color: 'white', fontSize: 17}} title="Login" >Generate Codes</Text>
+                </TouchableOpacity>
                 <FlatList
             removeClippedSubviews={true}
             extraData={true}
@@ -43,6 +89,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: "bold",
         color: 'black',
+        marginBottom: 20,
       },
       button: {
         backgroundColor: '#E9446A',

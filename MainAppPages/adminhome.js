@@ -55,7 +55,7 @@ export default class adminhome extends React.Component {
 
           <TouchableOpacity onPress={() => this.props.navigation.navigate('breakfast')} /* navigates to verifyOrder page onPress*/>  
             <View style={styles.box}>
-              <Image style={styles.Img} source={require('./qrscan.jpg')} />
+              <Image style={styles.Img} source={require('./images/Feedback.jpeg')} />
               <Text style={styles.sessioname}>Feedback</Text>
               </View>
           </TouchableOpacity>
