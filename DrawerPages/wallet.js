@@ -3,77 +3,75 @@ import {Text,Button,TouchableOpacity,TextInput,StyleSheet,View, Alert} from 'rea
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
-const user = auth().currentUser
-
-export async function showWallet(){
-    const userData = await firestore().collection('Users').doc(user.uid).get()
-                    .then(doc => {return doc.data()})
+export async function showWallet(){                         //A function that fetches the amount of virtual money of a user
+    const userData = await firestore().collection('Users').doc(auth().currentUser.uid).get() //This refers to a user's details stored in the document
+                    .then(doc => {return doc.data()})        
                     .catch(err => console.log(err))
-    return userData.wallet
+    return userData.wallet           //The value of the user's wallet is retured
 }
-export async function updateWallet(newValue, action){
-    const userDoc = firestore().collection('Users').doc(user.uid)
+export async function updateWallet(newValue, action){        //A function that is called when the value of the wallet needs to be changed
+    const userDoc = firestore().collection('Users').doc(auth().currentUser.uid)
     var wallet = 0
-    await userDoc.get().then(res => wallet = res.data().wallet)
+    await userDoc.get().then(res => wallet = res.data().wallet) //
                        .catch(err=> console.log(err))
 
-    if(action == 'add'){
+    if(action == 'add'){       //This is true when a user enter a code to increase their virtual money
         userDoc.update({
             wallet: wallet + newValue
         }).catch(err => console.log(err))
     }
-    else if(action == 'deduct'){
+    else if(action == 'deduct'){      //This is true when a user places an order and the virtual money is hence, decreased
         userDoc.update({
             wallet: wallet - newValue
         }).catch(err => console.log(err))
     }
 }
 
-export default class Wallet extends React.Component{
+export default class Wallet extends React.Component{    // this is the wallet component
     state = { 
-        wallet: null,
-        code: '',
-        errorMessage: ''
+        wallet: null,   // local wallet variable in state
+        code: '',       // state variable of voucher code to enter to add funds
+        errorMessage: '' // state variable of error message to display in case user makes a mistake
     }
 
-    constructor(props){
-        super(props)
+    constructor(props){     // constructor for this class component
+        super(props)        // a necessary built in function in constructors for class componenets in react
         this.updateWallet = updateWallet.bind(this)
     }
 
-    async componentDidMount(){
-        let listener = firestore().collection('Users').doc(auth().currentUser.uid).onSnapshot(docSnapshot => {
+    async componentDidMount(){  // built in function that runs when wallet first mounts/renders
+        let listener = firestore().collection('Users').doc(auth().currentUser.uid).onSnapshot(docSnapshot => {  // a listener that listens to the wallet value of user in database
             this.setState({wallet: docSnapshot.data().wallet})
         },
         err => console.log(err))
     }
 
-    processCode(){
-        if(this.state.code == ''){
-            this.setState({errorMessage: 'Please enter a code'})
+    processCode(){  //This function is called when a user enters a code to recharge their wallet
+        if(this.state.code == ''){  //If the user entered an empty string, this caters it with an error message
+            this.setState({errorMessage: 'Please enter a code'})    
             return
         }
-        const codeListDoc =  firestore().collection('Voucher Codes').doc('Codes List')
-        codeListDoc.get().then(doc => {
+        const codeListDoc =  firestore().collection('Voucher Codes').doc('Codes List')  //The codes stored in firebase database are fetched to check them with the one the user entered
+        codeListDoc.get().then(doc => {     
             var codeFound = false
             for(var i=0; i< Object.keys(doc.data()).length; i++){
-                if(doc.data()[i].code == this.state.code && doc.data()[i].used == false){
-                    this.updateWallet(200, 'add')
-                    codeListDoc.update({
+                if(doc.data()[i].code == this.state.code && doc.data()[i].used == false){ //This checks whether the code exists and that it is unused
+                    this.updateWallet(200, 'add') // When the condition checks out, the update wallet function is called to recharge a user's wallet by 200
+                    codeListDoc.update({          // the code in the database is updated with used = true
                         [`${i}.used`] : true
                     })
                     codeFound = true
-                    Alert.alert('Rs. 200 have been added to your wallet')
+                    Alert.alert('Rs. 200 have been added to your wallet')   // user is alertied that RS. 200 have been added
                 }
             }
-            if(codeFound == false){
+            if(codeFound == false){     // is user enters wrong code, error message is displayed
                 this.setState({errorMessage: 'Invalid Code'})
             }
         })
         .catch(err => console.log(err))
     }
 
-    render(){
+    render(){   // the render function that displays the contents of the screen
         return(
             <View style={styles.container}>
                 <Text style={styles.titleText}>Wallet Value: <Text style={{fontSize: 30,fontWeight: "bold",color: '#E9446A'}}> Rs {this.state.wallet}</Text></Text>

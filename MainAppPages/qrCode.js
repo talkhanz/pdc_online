@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text,Button,StyleSheet,View} from 'react-native';
+import {Text,Button,BackHandler,StyleSheet,View, Alert} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import QRCode from 'react-native-qrcode-svg';
@@ -13,9 +13,10 @@ export default class QRcode extends React.Component{
         verify: false,
     }
    
-    checkVerified(){
+   
+    checkVerified(){       // function that checks if QR code is verified
         let listener = firestore().collection('Orders').doc(this.props.route.params.orderID).onSnapshot(docSnapshot => {
-            if(docSnapshot.data().verified == true){
+            if(docSnapshot.data().verified == true){    // if oredr is verified in database, local state variable 'verify' is set to true
                 this.setState({verify: true})
                 listener()
             }
@@ -23,29 +24,33 @@ export default class QRcode extends React.Component{
         err => console.log(err))
     }
 
-    resetUserOrder(){
+    resetUserOrder(){   // function called when order is verified to reset current order to empty
         firestore().collection('Users').doc(this.props.route.params.uid).update({
-            currentOrder: {}
+            currentOrder: {
+                uid: null,
+                orderID: null,
+                orderList: [],
+                verified: false
+            }
         })
         .catch(err => console.log(err))
     }
     
     render(){
-        console.log(this.props.route.params.orderID.concat(this.props.route.params.time))
-        if(this.state.verify == false){
+        if(this.state.verify == false){ // if order not verified
             return(
                 <View>
                      <Appbar style={styles.Appbar} >
                                 <Icon style={{marginLeft: '3%'}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} /* on clicking this icon we get a side tab/drawer */ />
                                 <Title  style = {styles.titleText} >QR Code</Title>
                         </Appbar>
-                        <ProgressBar style={styles.ProgressBar} progress={0.75} color={Colors.green800} />
+                        <ProgressBar style={styles.ProgressBar} progress={0.75} color={Colors.green800} /* progress is set at 75% indicating further progress required. This comes to 75% after the user enters this screen from the shopping cart screen */  />
                 
                         <View style={{flex: 1,alignItems:'center', justifyContent: 'center',backgroundColor:'#75FFCF'}}>
-                            <Text style={{fontSize: 30,textAlign:'center',marginHorizontal:'3%',marginTop:'115%',marginBottom:'10%', fontWeight: 'bold'}}>{this.checkVerified()}Your payment is complete. Scan this QR Code at the PDC Counter to get your food</Text>
+                            <Text style={{fontSize: 30,textAlign:'center',marginHorizontal:'3%',marginTop:'115%',marginBottom:'10%', fontWeight: 'bold'}}>{this.checkVerified()}Your payment is complete.<Text style={{color:'red'}}> TAKE A SCREENSHOT OF THIS QR CODE </Text> and scan it at the PDC Counter to get your food</Text>
                             <QRCode
                             size={210}
-                            value={this.props.route.params.orderID.concat(this.props.route.params.time)}
+                            value={this.props.route.params.orderID}
                             logo={require('./images/pdc_online_icon.png')}
                             logoSize={55}
                             logoBackgroundColor='white'
@@ -56,7 +61,7 @@ export default class QRcode extends React.Component{
                 </View>
                 ) 
         }
-        else{
+        else{           // if order verified
             this.resetUserOrder()
             return(
                 <View style={{flex: 1, backgroundColor:'#75FFCF'}}>

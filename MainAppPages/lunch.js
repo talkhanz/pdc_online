@@ -31,25 +31,16 @@ import {
 
 } from 'react-native-paper';
 
-var  globalTheme =  {
-  ...PaperDefaultTheme,
-  roundness: 2,
-  colors: {
-    ...PaperDefaultTheme.Colors,
-    primary: '#E9446A',
-    accent: '#f1c40f',
-  },
-  };
 
 export default class iftari extends React.Component {
     state = {
       menuAvailable: '',  //state contains a menuAvaible string,
-      itemList : [], // itemList which contains items to show on screen, 
-      cartList:[], //cartList consists of items added to the cart,
-      count : 0, // count contains no of items in cart
+      itemList : [],      // itemList which contains items to show on screen, 
+      cartList:[],        //cartList consists of items added to the cart,
+      count : 0,          // count contains no of items in cart
       
     }
-    renderQuarterIcon(item){ // checks for item.quarter property and if icon should be rendered
+    renderQuarterIcon(item){    // checks for item.quarter property and if icon should be rendered
       if (item.quarter != '-'){ //if item is available or not
         return (
           <Icon  onPress={() => { /* on pressing + icon, an item is added to cartList */
@@ -99,7 +90,7 @@ export default class iftari extends React.Component {
           return(
             //scroll tags allow us to scroll
          <ScrollView theme ={globalTheme} persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={styles.scroll} >
-             <Appbar style={styles.row}  /*displays app bar */>
+             <Appbar style={styles.row}  /* A component to display action items in a bar */>
                  <Icon style={{marginLeft: '3%'}} onPress={() => this.props.navigation.openDrawer()} /* on pressing Icon on left of app bar, drawer opens */
                  name='md-menu' size={40} />
                    <Title style={styles.titleText}>Menu</Title>
@@ -117,66 +108,62 @@ export default class iftari extends React.Component {
       return ( //otherwise will display menu 
       <View style={{paddingBottom: '16%'}}>
 
-        <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={{color:'#FFDAE3'}} >
-        <Appbar style={styles.row}>
-            <Icon style={{marginLeft: '3%'}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} />
-              <Title style={styles.titleText}>Menu</Title>
-                <View style={{flexDirection:'row'}}>
-                    <Text style={styles.cart}>{this.state.count}</Text>
-                    <Icon onPress={() => this.props.navigation.navigate('cart',{cartItems: this.state.cartList})} name='md-cart' size={40} /* allows us to  pass cartList data to cart screen on Icon Press*//>  
-                </View>
-        </Appbar>
-        <ProgressBar style={styles.ProgressBar} progress={0.25} color={Colors.green800} /* progress is set at 25% indicating further progress required */ />
+                  <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={{color:'#FFDAE3'}} >
+                  <Appbar style={styles.row}/* A component to display action items in a bar */>
+                      <Icon style={{marginLeft: '3%'}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} />
+                        <Title style={styles.titleText}>Menu</Title>
+                          <View style={{flexDirection:'row'}}>
+                              <Text style={styles.cart}>{this.state.count}</Text>
+                              <Icon onPress={() => this.props.navigation.navigate('cart',{cartItems: this.state.cartList})} name='md-cart' size={40} /* allows us to  pass cartList data to cart screen on Icon Press*//>  
+                          </View>
+                  </Appbar>
+                  <ProgressBar style={styles.ProgressBar} progress={0.25} color={Colors.green800} /* progress is set at 25% indicating further progress required */ />
 
 
 
-          <FlatList
-          removeClippedSubviews={true}
-          extraData={true}
-          keyExtractor={ item => item.key}
-          data={this.state.itemList} /* we get our menu from itemList and storing it in data prop */ 
-           renderItem={({item}) => ( /* each item is being rendered to screen using renderItem prop */
-              <Card>
-                <Card.Title title={item.item}/>
-                <Card.Content>
+                      <FlatList
+                        removeClippedSubviews={true}
+                        extraData={true}
+                        keyExtractor={ item => item.key}
+                        data={this.state.itemList} /* we get our menu from itemList and storing it in data prop */ 
+                        renderItem={({item}) => ( /* each item is being rendered to screen using renderItem prop */
+                            <Card>
+                              <Card.Title title={item.item}/>
+
+                                <Card.Cover   style={styles.box}  source={{
+                                                      uri: item.img}} /> 
+                                                        <View  style={{flex: 1,justifyContent: 'center',flexDirection: 'row'}} /*flexDirection row renders components horizontally */> 
+                                                        <Text style={styles.subtitleText}>{'Standard  Rs '}{item.standard}{'   '}</Text> 
+                                                            <Icon  onPress={() => { /* + icon for adding item */
+                                                                const subItem = {
+                                                                    name: item.item,
+                                                                    portion: 'Standard',
+                                                                    price: item.standard
+                                                                }
+                                                                const arr = this.state.cartList.concat(subItem) /* allows us to navigate & pass cartList data to cart screen on icon press*/
+                                                                this.setState({cartList: arr})
+                                                                this.setState({count: this.state.count+1}) /*count incremented as item gets added to cart*/
+                                                                }} 
+                                                            name='ios-add' size={40} />
+
+                                                        </View>
+                                  <View  style={{flex: 1,justifyContent: 'center',flexDirection: 'row',}}>
+                                                      <Text style={styles.subtitleText}>{'Half  Rs '}{item.half}{'   '}</Text> 
+                                                      {
+                                                          this.renderHalfIcon(item) /* checks if the item.half + icon needs to be rendered */ 
+                                                      }
+                                  </View>
+                                  <View  style={{flex: 1,justifyContent: 'center',flexDirection: 'row',}}>
+                                                  <Text style={styles.subtitleText}>{'Quarter  Rs '}{item.quarter}{'   '}</Text>{
+
+                                                  this.renderQuarterIcon(item) /* checks if the item.quarter + icon needs to be rendered */
+                                              }
+                                  </View>
+                          
+                            </Card> )} />
+
                 
-                </Card.Content>
-                <Card.Cover   style={styles.box}  source={{
-                                      uri: item.img}} /> 
-                                          <View  style={{flex: 1,justifyContent: 'center',flexDirection: 'row'}} /*flexDirection row renders components horizontally */> 
-                                        <Text style={styles.subtitleText}>{'Standard  Rs '}{item.standard}{'   '}</Text> 
-                                        <Icon  onPress={() => { /* + icon for adding item */
-                                            const subItem = {
-                                                name: item.item,
-                                                portion: 'Standard',
-                                                price: item.standard
-                                            }
-                                            const arr = this.state.cartList.concat(subItem) /* allows us to navigate & pass cartList data to cart screen on icon press*/
-                                            this.setState({cartList: arr})
-                                            this.setState({count: this.state.count+1}) /*count incremented as item gets added to cart*/
-                                            }} 
-                                        name='ios-add' size={40} />
-
-                    </View>
-                    <View  style={{flex: 1,justifyContent: 'center',flexDirection: 'row',}}>
-                                        <Text style={styles.subtitleText}>{'Half  Rs '}{item.half}{'   '}</Text> 
-                                        {
-                                            this.renderHalfIcon(item) /* checks if the item.half + icon needs to be rendered */ 
-                                        }
-                    </View>
-                    <View  style={{flex: 1,justifyContent: 'center',flexDirection: 'row',}}>
-                                    <Text style={styles.subtitleText}>{'Quarter  Rs '}{item.quarter}{'   '}</Text>{
-
-                                    this.renderQuarterIcon(item) /* checks if the item.quarter + icon needs to be rendered */
-                                }
-                    </View>
-                    
-
-              
-              </Card> )} />
-
-       
-          </ScrollView>
+                    </ScrollView>
      </View>
         );
     }

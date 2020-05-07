@@ -1,3 +1,4 @@
+
 import 'react-native-gesture-handler';
 import React from 'react';
 import { NavigationContainer,StackActions, 
@@ -33,7 +34,7 @@ import {
 import Wallet from '../DrawerPages/wallet'
 import {showWallet, updateWallet} from '../DrawerPages/wallet'
 import { ScrollView } from 'react-native-gesture-handler';
-var  globalTheme =  {
+var  globalTheme =  {     // theme for the design module 'react-native-paper'
   ...PaperDefaultTheme,
   roundness: 2,
   colors: {
@@ -42,64 +43,63 @@ var  globalTheme =  {
     accent: '#f1c40f',
   },
   };
-export default class cart extends React.Component {
+export default class cart extends React.Component {   // cart component
     state = {
-      itemList: [],
-      errorMessage: '',
-      wallet: null ,
-      order: {
+      itemList: [],   // state variable that contains all cart items
+      errorMessage: '',   // error message to be displayed in case user makes a mistake
+      wallet: null ,      // local wallet variable
+      order: {            // the order object to be passed to the next QR code screen and the databse
         uid: 0,
         orderList: [],
         verified: false
       },
-      progressLevel: 0.0
+      progressLevel: 0.0    // for the progress bar visuualy seen below the header on the screen
     }
 
-    async componentDidMount(){
+    async componentDidMount(){    // built in function that runs when component 1st mounts/renders
       this.setState({itemList: this.props.route.params.cartItems})
     }
 
-    calculateTotal(list){
+    calculateTotal(list){   // function to calculate total
       var total = 0 ;
-      var list = this.props.route.params.cartItems
+      var list = this.props.route.params.cartItems  
       list.forEach(item=>{
-        total = total + parseInt(item.price)  
+        total = total + parseInt(item.price)  // total is calculated
       })
       return total
     }
 
-    async checkWallet(total){
+    async checkWallet(total){   // wallet is checked if enough funds are present in this function
       const wallet = await showWallet()
-      if(wallet < total){
+      if(wallet < total){       // if not enough funds, error message is displayed
         this.setState({errorMessage: 'Insufficient Funds in Wallet!'})
       }
-      else{
+      else{                     // if there are enough funds, the folowwing code runs
         const uid = await auth().currentUser.uid
         var orderID = ''
         Alert.alert("Confirm Payment" , `Rs. ${total} are about to be deducted from your wallet.`,
-          [
+          [     // user is alerted that Rs 200 will be deducted from their wallet
             {
-              text: "Cancel",
+              text: "Cancel",   // option to cancel
               style: "cancel"
             },
-            { text: "OK", onPress: async () => {
-              await updateWallet(total, 'deduct')
-              await firestore().collection('Orders').add(this.state.order).then(result => {
-                orderID = result._documentPath._parts[1]
+            { text: "OK", onPress: async () => {    //option to proceed
+              await updateWallet(total, 'deduct')   // funds are deducted from their wallet
+              await firestore().collection('Orders').add(this.state.order).then(result => {   // order is put in the database
+                orderID = result._documentPath._parts[1]    // orderID is retrieved
               }).catch(err => console.log(err))
-              const orderTimeStamp = moment().utcOffset('+05:00').format('DD-MM-YYYY hh:mm:ss a')
-              this.setState({order:{
+
+              this.setState({order:{    // order is set in the state
                 uid: uid,
-                orderID: orderID.concat(orderTimeStamp),
+                orderID: orderID,
                 orderList:this.props.route.params.cartItems,
                 verified: false
               }})
-              firestore().collection('Users').doc(uid).update({
+              firestore().collection('Users').doc(uid).update({   // users 'currentOrder' field in the database is updated
                 currentOrder: this.state.order
-              })
-              this.props.navigation.navigate('qrCode',{
+              })  
+              this.props.navigation.navigate('qrCode',{     // navigates to   qr   code screen with the following 2 params
                 uid: uid,
-                time: orderTimeStamp,
                 orderID: orderID
               })
             }}
@@ -110,11 +110,11 @@ export default class cart extends React.Component {
     }
 
     render(){
-        if(this.props.route.params){
-          showWallet().then((response)=> this.setState({wallet: response}))
+        if(this.props.route.params){    // is cart is not empty
+          showWallet().then((response)=> this.setState({wallet: response})) // wallet value is displayed
             return (
               <ScrollView>
-              <Appbar style={styles.row} theme = {globalTheme} >
+              <Appbar style={styles.row} theme = {globalTheme} /* Header at top of screen */ >
      
                 <Icon style={{marginLeft: '3%'}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} /* on clicking this icon we get a side tab/drawer */ />
                  <Title style= {styles.titleText}   >Shopping Cart</Title>
@@ -124,7 +124,7 @@ export default class cart extends React.Component {
 
              
                    <View style={styles.titleback}>
-                     <FlatList
+                     <FlatList /* Flatlist component is used to display cart items */
                      keyExtractor={ item => item.key}
                      data={this.state.itemList}
                      renderItem={({item}) => (
@@ -168,7 +168,7 @@ export default class cart extends React.Component {
               </ScrollView>
               );
         }
-        return(
+        return(   // is cart is empty
             <View style={styles.titleback}>
 
                      <Text style={styles.titleText}>Your cart is empty</Text>

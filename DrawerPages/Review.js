@@ -30,11 +30,11 @@ export default class Review extends React.Component{
           .utcOffset('+05:00')
           .format('DD-MM-YYYY hh:mm:ss a')
       }).then(()=> {
-          reviewCollection.get().then(snapshot => {     //This collects the reviews again after a user posts a review so that they can now see their own review as well
+          reviewCollection.get().then(snapshot => {  //This collects the reviews again after a user posts a review so that they can now see their own review as well
            
             snapshot.forEach(doc => {
 
-              REVIEWS.push(doc.data())                //Documents of reviews are pushed one by one in the REVIEWS variable
+              REVIEWS.push(doc.data())               //Documents of reviews are pushed one by one in the REVIEWS variable
             })
             REVIEWS.sort((a, b) => a.created.seconds<b.created.seconds) //Reviews being sorted using the timestamp variable stored in each review in the database
             this.setState({pastreviews: REVIEWS})   //The pastreviews variable is updated with the REVIEWS variables after all reviews are fetched
@@ -68,7 +68,6 @@ export default class Review extends React.Component{
         <Text style={styles.subtitleText}> Review </Text>
         <TextInput style={styles.TextInput} onChangeText={input => this.setState({review:input})} value={this.state.review} placeholder='Write your review here' textAlign={'center'} ></TextInput>
                
-        
         <TouchableOpacity onPress={() => this.publishreview()} style={styles.button} /* This calls the function that stores the review in the database*/ >  
             <Text style={{color: 'black', fontSize: 17}} title="Submit" >Submit</Text>
         </TouchableOpacity>
@@ -84,9 +83,9 @@ export default class Review extends React.Component{
                     <Text style={styles.Time}>Made on: {item.time}</Text>
                   </View>
                 )}
-          }
-        />
-      </View>
+             }
+         />
+       </View>
     )
   }
 }

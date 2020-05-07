@@ -31,15 +31,6 @@ import {
 
 } from 'react-native-paper';
 
-var  globalTheme =  {
-  ...PaperDefaultTheme,
-  roundness: 2,
-  colors: {
-    ...PaperDefaultTheme.Colors,
-    primary: '#E9446A',
-    accent: '#f1c40f',
-  },
-  };
 
 export default class iftari extends React.Component {
     state = {
@@ -118,14 +109,14 @@ export default class iftari extends React.Component {
       <View style={{paddingBottom: '16%'}}>
 
         <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={{color:'#FFDAE3'}} >
-        <Appbar style={styles.row}>
+          <Appbar style={styles.row}/* A component to display action items in a bar */>
             <Icon style={{marginLeft: '3%'}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} />
               <Title style={styles.titleText}>Menu</Title>
                 <View style={{flexDirection:'row'}}>
                     <Text style={styles.cart}>{this.state.count}</Text>
                     <Icon onPress={() => this.props.navigation.navigate('cart',{cartItems: this.state.cartList})} name='md-cart' size={40} /* allows us to  pass cartList data to cart screen on Icon Press*//>  
                 </View>
-        </Appbar>
+          </Appbar>
         <ProgressBar style={styles.ProgressBar} progress={0.25} color={Colors.green800} /* progress is set at 25% indicating further progress required */ />
 
 

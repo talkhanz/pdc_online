@@ -9,8 +9,8 @@ export default class verifyOrder extends React.Component{
         verified: false
     }
 
-    onSuccess = QRData => {
-        firestore().collection('Orders').doc(QRData.data).update({
+    onSuccess = QRData => {   // function that runs when    qr   code is successfully scanned by admin
+        firestore().collection('Orders').doc(QRData.data).update({  // order set to verified in database
             verified: true
         })
         .then(()=> {
@@ -20,13 +20,12 @@ export default class verifyOrder extends React.Component{
     }
 
     render(){
-        if(this.state.verified == false){
+        if(this.state.verified == false){   // if not verified, admin is displayed a QR Code scanner
             return(
                 <View style={{flex: 1,alignItems:'center', justifyContent: 'center',backgroundColor:'#75FFCF'}}>
                     <Text style={styles.titleText}>Verify Order</Text>
                     <QRCodeScanner
                         onRead={this.onSuccess}
-                        //flashMode={QRCodeScanner.Constants.FlashMode.auto}
                         topContent={
                         <Text style={styles.subtitleText}>
                             Scan the QR code on customer's mobile device
@@ -37,7 +36,7 @@ export default class verifyOrder extends React.Component{
                 </View>
                 )
         }
-      else{
+      else{     // if verified, admin is displayed that order is verified
         return(
             <View style={{flex: 1,alignItems:'center', justifyContent: 'center',backgroundColor:'#75FFCF'}}>
                 <Text style={styles.titleText}>Order Verified!</Text>

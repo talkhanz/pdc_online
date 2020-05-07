@@ -31,16 +31,7 @@ import {
 
 } from 'react-native-paper';
 
-var  globalTheme =  {
-  ...PaperDefaultTheme,
-  roundness: 2,
-  colors: {
-    ...PaperDefaultTheme.Colors,
-    primary: '#E9446A',
-    accent: '#f1c40f',
-  },
-  };
-  
+
 
 export default class iftari extends React.Component {
     state = {
@@ -122,7 +113,7 @@ export default class iftari extends React.Component {
       }
       return ( /* otherwise will display menu */ 
         <View style={{paddingBottom: '16%'}}>
-        <Appbar style={styles.Appbar}>
+        <Appbar style={styles.Appbar} /* A component to display action items in a bar */>
             <Icon style={{marginLeft: '3%'}} onPress={() => this.props.navigation.openDrawer()} /* on pressing Icon on left of app bar,drawer opens */ 
              name='md-menu' size={40} />
               <Title style={styles.titleText}>Menu</Title>
@@ -137,7 +128,7 @@ export default class iftari extends React.Component {
         
 
 
-          <FlatList
+        <FlatList
           removeClippedSubviews={true}
           extraData={true}
           keyExtractor={ item => item.key}
@@ -152,32 +143,35 @@ export default class iftari extends React.Component {
                                       uri: item.img,
                                   }} /*Image is added here from uri */ > 
                 </Card.Cover >
+
                     <View  style={{flex: 1,justifyContent: 'center',flexDirection: 'row'}} /*flexDirection row renders components horizontally */> 
-                                        <Text style={styles.subtitleText}>{'Standard  Rs '}{item.standard}{'   '}</Text> 
-                                        <Icon  onPress={() => { /* + icon for adding item */
-                                            const subItem = {
-                                                name: item.item,
-                                                portion: 'Standard',
-                                                price: item.standard
-                                            }
-                                            const arr = this.state.cartList.concat(subItem) /* concats item to cartList */
-                                            this.setState({cartList: arr})
-                                            this.setState({count: this.state.count+1}) /* count incremented as item gets added to cart */
-                                            }} 
-                                        name='ios-add' size={40} />
+                        <Text style={styles.subtitleText}>{'Standard  Rs '}{item.standard}{'   '}</Text> 
+                        <Icon  onPress={() => { /* + icon for adding item */
+                            const subItem = {
+                                name: item.item,
+                                portion: 'Standard',
+                                price: item.standard
+                            }
+                            const arr = this.state.cartList.concat(subItem) /* concats item to cartList */
+                            this.setState({cartList: arr})
+                            this.setState({count: this.state.count+1}) /* count incremented as item gets added to cart */
+                            }} 
+                        name='ios-add' size={40}  />
 
                     </View>
-                    <View  style={{flex: 1,justifyContent: 'center',flexDirection: 'row',}}>
-                                        <Text style={styles.subtitleText}>{'Half  Rs '}{item.half}{'   '}</Text> 
-                                        {
-                                            this.renderHalfIcon(item) /* checks if the item.half + icon needs to be rendered */
-                                        }
-                    </View>
-                    <View  style={{flex: 1,justifyContent: 'center',flexDirection: 'row',}}>
-                                    <Text style={styles.subtitleText}>{'Quarter  Rs '}{item.quarter}{'   '}</Text>{
 
-                                    this.renderQuarterIcon(item) /* checks if the item.quarter + icon needs to be rendered */
-                                }
+                    <View  style={{flex: 1,justifyContent: 'center',flexDirection: 'row',}}>
+                        <Text style={styles.subtitleText}>{'Half  Rs '}{item.half}{'   '}</Text> 
+                        {
+                            this.renderHalfIcon(item) /* checks if the item.half + icon needs to be rendered */
+                        }
+                    </View>
+
+                    <View  style={{flex: 1,justifyContent: 'center',flexDirection: 'row',}}>
+                        <Text style={styles.subtitleText}>{'Quarter  Rs '}{item.quarter}{'   '}</Text>{
+
+                        this.renderQuarterIcon(item) /* checks if the item.quarter + icon needs to be rendered */
+                        }
                     </View>
                     
 

@@ -10,83 +10,82 @@ import {createAppContainer} from 'react-navigation'
 import {createStackNavigator} from '@react-navigation/stack';
 import auth from '@react-native-firebase/auth';
 import Icon from 'react-native-vector-icons/Ionicons'
-import {SafeAreaView, ImageBackground, StyleSheet, Text, View, Alert, Image, ScrollView,TouchableOpacity} from 'react-native';
+import {SafeAreaView, ImageBackground, StyleSheet,BackHandler, Text, View, Alert, Image, ScrollView,TouchableOpacity} from 'react-native';
 import {DarkTheme as PaperDarkTheme,
   DefaultTheme as PaperDefaultTheme,ProgressBar,Colors,withTheme,Card,Button,Appbar,Title,Paragraph,Provider as PaperProvider } from 'react-native-paper';
 
-  var  globalTheme =  {  
-    ...PaperDefaultTheme,
-    roundness: 2,
-    colors: {
-      ...PaperDefaultTheme.Colors,
-      primary: '#E9446A',
-      accent: '#f1c40f',
-    },
-    };
+
  class SessionMenu extends React.Component {
+  componentDidMount(){    
+    this.backhandler = BackHandler.addEventListener("hardwareBackPress", () => {  // if user presses back button on device from this screen, the app exits
+      if(this.props.navigation.isFocused()){
+        BackHandler.exitApp() 
+      }
+    })
+  }
+
   render(){
     return (
       <View>
-      <Appbar style={styles.Appbar} >
+      <Appbar style={styles.Appbar} /* A component to display action items in a bar */ > 
      
       <Icon style={{marginLeft: '3%'}} onPress={() => this.props.navigation.openDrawer()} name='md-menu' size={40} /* on clicking this icon we get a side tab/drawer */ />
       <Title  style = {styles.titleText} >Menu</Title>
       </Appbar>
-   <ScrollView >
+            <ScrollView >
+              
+              <Card style={styles.screen} /*Card is a react-native-paper module that is Material Design Compliant & Provides responsive components */
+                onPress={()=>{ this.props.navigation.navigate('sehri')}}/* navigates to sehri screen if card pressed */> 
 
-   
-     
-    
-   <Card style={styles.screen} /*Card is a react-native-paper module that is Material Design Compliant & Provides responsive components */
-    onPress={()=>{ this.props.navigation.navigate('sehri')}}/* navigates to sehri screen if card pressed */> 
- 
-    <Card.Content>
-      <Title style={styles.title}>Sehri</Title>
-      
-    </Card.Content>
-    <Card.Cover style={styles.box} source={require('./images/VIEWSEHRI.jpg')} /*contains image for the card */ />
+                    <Card.Content>
+                    <Title style={styles.title}>Sehri</Title>
 
-    </Card>
-  <Card style={styles.screen} onPress={()=>{ this.props.navigation.navigate('iftari')}}/* navigates to iftari screen if card pressed */>
- 
- <Card.Content>
-   <Title style={styles.title}>Iftari</Title>
-   
- </Card.Content>
- <Card.Cover  style={styles.box} source={require('./images/VIEWIFTARI.jpg')} /*contains image for the card */ />
+                      
+                    </Card.Content>
+                    <Card.Cover style={styles.box} source={require('./images/VIEWSEHRI.jpg')} /*contains image for the card */ />
 
-</Card>
 
- <Card style={styles.screen} 
- onPress={()=>{ this.props.navigation.navigate('breakfast')}}/*navigates to breakfast*/> 
-  
-    <Card.Content>
-      <Title style={styles.title}>Breakfast</Title>
-    </Card.Content>
-    
-    <Card.Cover style={styles.box} source={require('./images/VIEWBREAKFAST.jpeg')} /*contains image for the card */  />
+              </Card>
+              <Card style={styles.screen} onPress={()=>{ this.props.navigation.navigate('iftari')}}/* navigates to iftari screen if card pressed */>
+          
+                  <Card.Content>
+                    <Title style={styles.title}>Iftari</Title>
+                    
+                  </Card.Content>
+                  <Card.Cover  style={styles.box} source={require('./images/VIEWIFTARI.jpg')} /*contains image for the card */ />
 
-  </Card>
-  <Card style={styles.screen} onPress={()=>{ this.props.navigation.navigate('lunch')}}>
-   
-    <Card.Content>
-      <Title  style={styles.title} >Lunch</Title>
-     
-    </Card.Content>
-    <Card.Cover style={styles.box} source={require('./images/VIEWLUNCH.jpeg')} /*contains image for the card */  />
-    
-  </Card>
+                  </Card>
 
-  <Card style={{backgroundColor:'#FEDBD0',paddingBottom: '18%'}}  onPress={()=>{ this.props.navigation.navigate('dinner')}} /* navigates to sehri screen if card pressed */>
- 
-    <Card.Content>
-      <Title  style={styles.title}>Dinner</Title>
-      
-    </Card.Content>
-    <Card.Cover style={styles.box} source={require('./images/dinner.jpeg')}  /*contains image for the card */   />
+                  <Card style={styles.screen} 
+                  onPress={()=>{ this.props.navigation.navigate('breakfast')}}/*navigates to breakfast*/> 
+                    
+                      <Card.Content>
+                        <Title style={styles.title}>Breakfast</Title>
+                      </Card.Content>
+                      
+                      <Card.Cover style={styles.box} source={require('./images/VIEWBREAKFAST.jpeg')} /*contains image for the card */  />
 
-  </Card>
-</ScrollView>
+                </Card>
+                <Card style={styles.screen} onPress={()=>{ this.props.navigation.navigate('lunch')}}>
+                
+                    <Card.Content>
+                      <Title  style={styles.title} >Lunch</Title>
+                    
+                    </Card.Content>
+                    <Card.Cover style={styles.box} source={require('./images/VIEWLUNCH.jpeg')} /*contains image for the card */  />
+                  
+                </Card>
+
+                  <Card style={{backgroundColor:'#FEDBD0',paddingBottom: '18%'}}  onPress={()=>{ this.props.navigation.navigate('dinner')}} /* navigates to sehri screen if card pressed */>
+                
+                      <Card.Content>
+                        <Title  style={styles.title}>Dinner</Title>
+                        
+                      </Card.Content>
+                      <Card.Cover style={styles.box} source={require('./images/dinner.jpeg')}  /*contains image for the card */   />
+
+                  </Card>
+          </ScrollView>
 </View>
 
    
@@ -98,10 +97,10 @@ import {DarkTheme as PaperDarkTheme,
 const styles = StyleSheet.create({  //This sheet is associated only with this screen i.e the sessionsMenu screen
 
   screen:{
-    backgroundColor:'#FEDBD0',
+    backgroundColor:'#FEDBD0'
   } , 
   title:{
-    fontSize: 24
+    fontSize: 26
   },
   container: {
     flex: 1,
@@ -120,14 +119,6 @@ const styles = StyleSheet.create({  //This sheet is associated only with this sc
   Appbar: {
     backgroundColor:'#E9446A',
     height: 67
-  },
-  titleback: {
-    backgroundColor:'#E9446A',
-    alignItems: 'center',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
-    borderBottomLeftRadius: 20,
   },
   titleText: {
     fontSize: 30,

@@ -56,7 +56,8 @@ export default class sehri extends React.Component {
             this.setState({cartList: arr})  /* array is assigned to the cartList property */
             this.setState({count: this.state.count+1}) /*  the count property is incremented */
             }} 
-        name='ios-add' size={40} />
+        name='ios-add' size={40} 
+        />
                   )  
       }
     }
@@ -114,7 +115,7 @@ export default class sehri extends React.Component {
       return ( /*otherwise will display menu */
 
         <View>
-          <Appbar style={styles.Appbar}>
+          <Appbar style={styles.Appbar} /*  A component to display action items in a bar */ >
               <Icon style={{marginLeft: '3%'}} onPress={() => this.props.navigation.openDrawer()}  /* on pressing Icon on left of app bar,drawer opens */ 
               name='md-menu' size={40}  />
                 <Title style={styles.titleText}>Menu</Title>
@@ -135,10 +136,8 @@ export default class sehri extends React.Component {
             data={this.state.itemList} /* we get our menu from itemList and storing it in data prop*/ 
              renderItem={({item}) => ( /* each item is being rendered to screen using renderItem prop and hence if there are n items then n card components are displayed */
               <Card style={styles.screen}/*Card is a react-native-paper module that is Material Design Compliant & Provides responsive components */ >
-                <Card.Title title={item.item} /*Title is set name of item */ />
-                <Card.Content>
                 
-                </Card.Content>
+                <Card.Title  title={item.item} /*Title is set name of item */ />
                 <Card.Cover  style={styles.box} source={{
                                     uri: item.img,
                                 }} /* Image added here from a uri */ />
@@ -175,10 +174,7 @@ export default class sehri extends React.Component {
                     >Proceed to cart?
                     </Button>
                   </Card.Actions>
-        
-
-   
-                  </Card> )} />
+              </Card> )} />
   
          
        </ScrollView>

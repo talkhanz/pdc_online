@@ -37,8 +37,8 @@ var  globalTheme =  {
   };
 
 export default class adminhome extends React.Component {
-  componentDidMount(){
-    this.backhandler = BackHandler.addEventListener("hardwareBackPress", () => {
+  componentDidMount(){    
+    this.backhandler = BackHandler.addEventListener("hardwareBackPress", () => {  // if user presses back button on device from this screen, the app exits
       if(this.props.navigation.isFocused()){
         BackHandler.exitApp() 
       }
@@ -58,33 +58,31 @@ export default class adminhome extends React.Component {
               this.props.navigation.dispatch(StackActions.popToTop());    // clears all screens from stack except 1st login screen so user is navigated to login screen
             }}  /* This is our drawer that has been defined with the repective screens in App.js */ />    
 
-
-            </Appbar>
+        </Appbar>
         
      <ScrollView persistentScrollbar= {true} showsVerticalScrollIndicator= {true} styles={styles.scroll} /* allows us to scroll */ > 
   
     
     
-    <Card  onPress={()=>{ this.props.navigation.navigate('adminVerifyOrder')}}>
+    <Card /*Card is a react-native-paper module that is Material Design Compliant & Provides responsive components */ 
+     onPress={()=>{ this.props.navigation.navigate('adminVerifyOrder')}} /*This Card redirects the user to the screen where an admin can verify an order*/ >
       <Card.Content >
         <Title  style={styles.title}>Verify Order</Title>
-        <Card.Cover style= {styles.Img}  source={require('./images/VERIFYORDER.jpg')}  /> 
+        <Card.Cover style= {styles.Img}  source={require('./images/VERIFYORDER.jpg')} /*contains image for the card */  /> 
       </Card.Content >
     </Card>
   
-    <Card  onPress={()=>{ this.props.navigation.navigate('adminManageVouchers')}}>
+    <Card  onPress={()=>{ this.props.navigation.navigate('adminManageVouchers')}} /*This Card redirects the user to the screen where an admin can verify an order*/ >
       <Card.Content >
-      <Title  style={styles.title}>Manage Voucher</Title>
-
-        <Card.Cover style= {styles.Img}   source={require('./images/voucher.png')}  />
+        <Title  style={styles.title}>Manage Voucher</Title>
+        <Card.Cover style= {styles.Img}   source={require('./images/voucher.png')} /*contains image for the card */ />
       </Card.Content >
     </Card>
 
-    <Card style={{paddingBottom: '16%'}} onPress={() => this.props.navigation.navigate('choosefeedback')} >
+    <Card style={{paddingBottom: '16%'}} onPress={() => this.props.navigation.navigate('choosefeedback')} /*This Card redirects the user to the screen where an admin can verify an order*/ >
       <Card.Content >
-      <Title style={styles.title}>Feedback</Title>
-
-        <Card.Cover style= {styles.Img}  source={require('./images/feedback.jpeg')} />
+        <Title style={styles.title}>Feedback</Title>
+        <Card.Cover style= {styles.Img}  source={require('./images/feedback.jpeg')} /*contains image for the card */ />
       </Card.Content>
     </Card>
   

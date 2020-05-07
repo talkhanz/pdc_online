@@ -31,16 +31,16 @@ export default class choosefeedback extends React.Component {
     return ( 
       <View>   
         <Card onPress={() =>this.props.navigation.navigate('reviewAdmin')} /*A card made that, on tap, goes to the review admin screen*/ >    
-        <Card.Content>         
-        <Card.Cover source={require('./images/customer_reviews.png')}/>
-          <Text style={styles.sessioname}>Customer Reviews</Text>
+          <Card.Content>         
+          <Card.Cover source={require('./images/customer_reviews.png')} /*contains image for the card */ />
+            <Text style={styles.sessioname}>Customer Reviews</Text>
           </Card.Content>
 
         </Card>
         <Card onPress={() =>this.props.navigation.navigate('suggestionAdmin')} /*A card made that, on tap, goes to the suggestion admin screen*/ >
         <Card.Content>   
-          <Card.Cover source={require('./images/suggestion-box.jpg')} />
-          <Text style={styles.sessioname}>Suggestions by Customers</Text>
+          <Card.Cover source={require('./images/suggestion-box.jpg')}  /*contains image for the card */ />
+            <Text style={styles.sessioname}>Suggestions by Customers</Text>
           </Card.Content>   
         </Card>
         </View>

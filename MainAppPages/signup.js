@@ -9,22 +9,22 @@ import auth from '@react-native-firebase/auth';
 import {ImageBackground, Button, StyleSheet,ScrollView, TouchableOpacity, Text, View, Alert, TextInput, Image} from 'react-native';
 
 export default class Login extends React.Component{
-    state = {
+    state = {       // state variables for signup page
         email: '',
         password: '',
         name: '',
     }
 
-    signup(){
+    signup(){                               
         auth().createUserWithEmailAndPassword(this.state.email,this.state.password)
         .then(async (resp) => {
-            resp.user.updateProfile({displayName: this.state.name})
-            auth().currentUser.sendEmailVerification().catch(err => console.log(err))
-            Alert.alert('Please verify your email. It may be in your junk folder')
+            resp.user.updateProfile({displayName: this.state.name}) 
+            auth().currentUser.sendEmailVerification().catch(err => console.log(err))   //Firestore's builtin function that sends an email to the user for verification
+            Alert.alert('Please verify your email. It may be in your junk folder')      // user is alerted to verify email
             const uid = resp.user.uid
-            auth().signOut().catch(err => console.log(err));            // signs out user
-            firestore().collection('Users').doc(uid).set({
-                name : this.state.name,
+            auth().signOut().catch(err => console.log(err));   // signs out user
+            firestore().collection('Users').doc(uid).set({    //User's details are uploaded to firebase after all info checks out as alright and error free
+                name : this.state.name,               
                 password : this.state.password,
                 email : this.state.email,
                 wallet : 0,
@@ -39,11 +39,11 @@ export default class Login extends React.Component{
             }).catch(err=> console.log(err))
             this.props.navigation.dispatch(StackActions.popToTop());    // clears all screens from stack except 1st login screen so user is navigated to login screen
         })
-        .catch(error => {
-          if (error.code === 'auth/email-already-in-use') {
-            this.setState({errorMessage: 'Email address already in use!'})
+        .catch(error => {                                      //Incase of different errors in the input, it is redirected here
+          if (error.code === 'auth/email-already-in-use') {    //This checks for emails that are already registered in firebase
+            this.setState({errorMessage: 'Email address already in use!'})  
           }
-          if (error.code === 'auth/invalid-email') {
+          if (error.code === 'auth/invalid-email') {            //Any irregularities in the part of an email address after '@' are checked here
             this.setState({errorMessage: 'Invalid Email!'})
           }
           this.setState({errorMessage: error.message})

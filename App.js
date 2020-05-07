@@ -32,7 +32,7 @@ import reviewAdmin from './MainAppPages/review_admin';
 import suggestionAdmin from './MainAppPages/suggestion_admin';
 import deleteAccount from './DrawerPages/deleteAccount';
 import ForgotPassword from './MainAppPages/forgotPassword';
-import MyOrder from './DrawerPages/currentOrder';
+
 
 import { StackActions, 
   DefaultTheme as NavigationDefaultTheme,
@@ -42,6 +42,10 @@ import {
   useTheme,
   Avatar,
   Title,
+  Card,
+  Colors,
+  Appbar,
+  ProgressBar,
   Caption,
   Paragraph,
   Drawer,
@@ -49,7 +53,7 @@ import {
   TouchableRipple,
   Switch,
   Drawer as PaperDrawer,
-  IconButton,
+  IconButton,withTheme,
   DarkTheme as PaperDarkTheme,
     DefaultTheme as PaperDefaultTheme,
 
@@ -167,7 +171,6 @@ export default class App extends React.Component {  // this is the first compone
      <drawer.Navigator initialRouteName='Main Menu' drawerContent={(props) => <CustomDrawerComponent {...props} />} drawerStyle={{backgroundColor: '#FFDAE3',width: 240}}>
         <drawer.Screen name='Main Menu' component={AppStack} options={({ route }) => ({drawerIcon:()=>{return <Icon color='#E9446A' name='ios-beer' size={40} />},gestureEnabled: getGestureEnable(route) })}/>
         <drawer.Screen name='Wallet' component={wallet} options={{drawerIcon:()=>{return <Icon color='#E9446A' name='ios-wallet' size={40} />}}}/>
-        <drawer.Screen name='My Order' component={MyOrder} options={({ route }) => ({drawerIcon:()=>{return <Icon color='#E9446A' name='ios-basket' size={40} />},gestureEnabled: getGestureEnable(route) })}/>
         <drawer.Screen name='Post a Review' component={review} options={{drawerIcon:()=>{return <Icon color='#E9446A' name='ios-book' size={40} />}}}/>
         <drawer.Screen name='Got any Suggestions?' component={suggestion} options={{drawerIcon:()=>{return <Icon2 color='#E9446A' name='comment' size={27} />}}}/> 
         <drawer.Screen name="Delete Account" component={deleteAccount} options={{ drawerIcon:()=>{return <Icon color='#E9446A' name='ios-cog' size={40} />}}}/>

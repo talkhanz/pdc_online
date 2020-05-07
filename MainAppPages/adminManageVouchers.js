@@ -12,15 +12,15 @@ export default class voucherManager extends React.Component{
         codeDisplay: ''
     }
 
-    codeGenerator(){
+    codeGenerator(){        //A function that generates codes to be used for recharging user wallets
         Alert.alert("Reset codes in Database?" , 'This will clear and replace the codes present in databse with new ones',
         [
           {
-            text: "Cancel",
+            text: "Cancel",     // option to cancel
             style: "cancel"
           },
-          { text: "OK", onPress: async () => {
-                const codes = voucher.generate({
+          { text: "OK", onPress: async () => {      // option to proceed
+                const codes = voucher.generate({    // 10 codes are generated of length 12
                     length: 12,
                     count:10
                 })
@@ -28,31 +28,31 @@ export default class voucherManager extends React.Component{
                 for(var i=0; i< codes.length; i++){
                     codeList[i] = ({
                         code: codes[i],
-                        used: false
+                        used: false     // all generated codes are are set with used = false
                     })
                 }
                 this.setState({codesList: codes})
-                firestore().collection('Voucher Codes').doc('Codes List').set(codeList)
+                firestore().collection('Voucher Codes').doc('Codes List').set(codeList) // codes are put in databse
                 .catch(err => console.log(err))
           }}
         ]
       );
     }
 
-    getCode(){
+    getCode(){      // function to get a random unsed code from database
         firestore().collection('Voucher Codes').doc('Codes List').get().then(doc => {
             const totalCodes = Object.keys(doc.data()).length
             var codeNumber = 0
             var randomCode = null
-            do {
+            do {                    // do while loop for finding a random unused code
                 randomCode = Math.round(Math.random() * totalCodes) - 1
                 codeNumber++
             } while (doc.data()[randomCode].used == true && codeNumber <= totalCodes);
 
-            if(codeNumber > totalCodes){
+            if(codeNumber > totalCodes){        // if no such code found, the following line is displayed to user
                 this.setState({codeDisplay: 'No new codes available. Generate new codes'})
             }
-            else{
+            else{       // if code found, it is stored in state
                 this.setState({codeDisplay: doc.data()[randomCode].code})
             }
         })
@@ -64,14 +64,18 @@ export default class voucherManager extends React.Component{
             <View style={{flex: 1,alignItems:'center', backgroundColor:'#D3D3D3'}}>
                 <Text style={styles.titleText}>Manage Voucher Codes</Text>
                 <Text style={{fontSize: 20, marginHorizontal:'5%', textAlign: 'center'}}>Click below button to generate a new code</Text>
-                <TouchableOpacity onPress={() => this.getCode()} style={styles.button}>
-                        <Text style={{color: 'white', fontSize: 17}} title="Login" >Get Random Code</Text>
-                    </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => this.getCode()} style={styles.button} /*A function that is run when the admin wants to retrieve a code from the database*/ >
+                    <Text style={{color: 'white', fontSize: 17}} title="Login" >Get Random Code</Text>
+                </TouchableOpacity>
+            
                 <Text style={{fontSize: 20,textAlign:'center',marginHorizontal:30,marginVertical:15}}>{this.state.codeDisplay}</Text>
                 <Text style={{fontSize: 20, marginHorizontal:'5%', textAlign: 'center'}}>Click below button to reset the codes in the database once all are used</Text>
-                <TouchableOpacity onPress={() => this.codeGenerator()} style={styles.button}>
+            
+                <TouchableOpacity onPress={() => this.codeGenerator()} style={styles.button} /*The codegenerator function is called when to create codes for updating wallet amount*/ > 
                     <Text style={{color: 'white', fontSize: 17}} title="Login" >Generate Codes</Text>
                 </TouchableOpacity>
+            
                 <FlatList
             removeClippedSubviews={true}
             extraData={true}
